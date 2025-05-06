@@ -4,7 +4,9 @@ import { useSwipe } from '@/hooks/useSwipe';
 import ComicPage from './ComicPage';
 import { cn } from '@/lib/utils';
 import comicPages from '@/data/comicPages';
-import { ChevronDown, ChevronUp, Sun } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import ProfileHeader from './ProfileHeader';
+import PostActions from './PostActions';
 
 const ComicReader = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -74,31 +76,29 @@ const ComicReader = () => {
   
   return (
     <div className="relative flex flex-col h-full w-full bg-gradient-to-b from-black via-comic to-black overflow-hidden">
-      {/* Header with title and visual elements */}
-      <div className="absolute top-0 left-0 w-full z-20 bg-gradient-to-b from-black/80 to-transparent pt-4 pb-8 px-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white tracking-wider">
-            <span className="bg-gradient-to-r from-comic-accent to-blue-400 bg-clip-text text-transparent">CRAZY BD</span>
-          </h1>
-          <div className="flex flex-col items-end">
-            <span className="text-xs text-white/70 mb-1">
-              {activeIndex + 1} / {comicPages.length}
-            </span>
-            <div className="w-24 h-1 bg-gray-800 rounded overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-comic-accent to-blue-400 transition-all duration-300" style={{
-                width: `${progressPercentage}%`
-              }} />
-            </div>
+      {/* App Header with title */}
+      <div className="sticky top-0 left-0 right-0 z-30 bg-black px-4 py-3 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-white tracking-wider">
+          <span className="bg-gradient-to-r from-comic-accent to-blue-400 bg-clip-text text-transparent">FLIZY</span>
+        </h1>
+        <div className="flex items-center gap-2">
+          <div className="w-24 h-1 bg-gray-800 rounded overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-comic-accent to-blue-400 transition-all duration-300" style={{
+              width: `${progressPercentage}%`
+            }} />
           </div>
         </div>
-        
-        {/* Decorative elements for header */}
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-[radial-gradient(circle_at_center,rgba(0,204,255,0.2)_0%,transparent_70%)] blur-xl"></div>
-        <div className="absolute -top-5 -left-10 w-32 h-32 bg-[radial-gradient(circle_at_center,rgba(255,105,180,0.15)_0%,transparent_70%)] blur-xl"></div>
       </div>
       
+      {/* Profile Header */}
+      <ProfileHeader 
+        username="marcus" 
+        verified={true} 
+        profileImage="https://api.dicebear.com/7.x/thumbs/svg?seed=marcus" 
+      />
+      
       {/* Main comic container */}
-      <div className="comic-swipe-container relative w-full h-full overflow-hidden" {...swipeHandlers}>
+      <div className="comic-swipe-container relative w-full h-full overflow-hidden flex-grow" {...swipeHandlers}>
         {/* Patterns for top and bottom empty spaces */}
         <div className="absolute inset-0 opacity-20 pointer-events-none">
           {/* Top atmosphere */}
@@ -213,6 +213,9 @@ const ComicReader = () => {
           </div>
         )}
       </div>
+      
+      {/* Post Actions (likes and comments) */}
+      <PostActions />
     </div>
   );
 };
