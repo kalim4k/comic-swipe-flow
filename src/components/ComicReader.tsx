@@ -1,9 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { useSwipe } from '@/hooks/useSwipe';
 import ComicPage from './ComicPage';
 import { cn } from '@/lib/utils';
 import comicPages from '@/data/comicPages';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Sun } from 'lucide-react';
+
 const ComicReader = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [swipingDirection, setSwipingDirection] = useState<'up' | 'down' | null>(null);
@@ -17,8 +19,9 @@ const ComicReader = () => {
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
+  
   const goToNextPage = () => {
-    if (isTransitioning) return;
+    if (isTransitioning) return; // Prevent multiple transitions
     if (activeIndex < comicPages.length - 1) {
       setSwipingDirection('up');
       setIsTransitioning(true);
@@ -29,8 +32,9 @@ const ComicReader = () => {
       }, 400); // Match this to animation duration
     }
   };
+  
   const goToPrevPage = () => {
-    if (isTransitioning) return;
+    if (isTransitioning) return; // Prevent multiple transitions
     if (activeIndex > 0) {
       setSwipingDirection('down');
       setIsTransitioning(true);
@@ -41,6 +45,7 @@ const ComicReader = () => {
       }, 400); // Match this to animation duration
     }
   };
+  
   const {
     swipeHandlers,
     direction,
@@ -66,8 +71,10 @@ const ComicReader = () => {
 
   // Calculate progress percentage
   const progressPercentage = (activeIndex + 1) / comicPages.length * 100;
-  return <div className="relative flex flex-col h-full w-full bg-gradient-to-b from-black via-comic to-black overflow-hidden">
-      {/* Header with title and progress */}
+  
+  return (
+    <div className="relative flex flex-col h-full w-full bg-gradient-to-b from-black via-comic to-black overflow-hidden">
+      {/* Header with title and visual elements */}
       <div className="absolute top-0 left-0 w-full z-20 bg-gradient-to-b from-black/80 to-transparent pt-4 pb-8 px-4">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-white tracking-wider">
@@ -79,74 +86,104 @@ const ComicReader = () => {
             </span>
             <div className="w-24 h-1 bg-gray-800 rounded overflow-hidden">
               <div className="h-full bg-gradient-to-r from-comic-accent to-blue-400 transition-all duration-300" style={{
-              width: `${progressPercentage}%`
-            }} />
+                width: `${progressPercentage}%`
+              }} />
             </div>
           </div>
         </div>
+        
+        {/* Decorative elements for header */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-[radial-gradient(circle_at_center,rgba(0,204,255,0.2)_0%,transparent_70%)] blur-xl"></div>
+        <div className="absolute -top-5 -left-10 w-32 h-32 bg-[radial-gradient(circle_at_center,rgba(255,105,180,0.15)_0%,transparent_70%)] blur-xl"></div>
       </div>
       
       {/* Main comic container */}
       <div className="comic-swipe-container relative w-full h-full overflow-hidden" {...swipeHandlers}>
         {/* Patterns for top and bottom empty spaces */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <div className="absolute top-0 left-0 right-0 h-1/4 bg-[radial-gradient(circle_at_center,rgba(0,204,255,0.1)_0%,transparent_70%)]"></div>
-          <div className="absolute bottom-0 left-0 right-0 h-1/4 bg-[radial-gradient(circle_at_center,rgba(0,204,255,0.1)_0%,transparent_70%)]"></div>
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          {/* Top atmosphere */}
+          <div className="absolute top-0 left-0 right-0 h-1/4 bg-[radial-gradient(ellipse_at_center,rgba(0,204,255,0.15)_0%,transparent_70%)]"></div>
+          
+          {/* Bottom atmosphere */}
+          <div className="absolute bottom-0 left-0 right-0 h-1/4 bg-[radial-gradient(ellipse_at_center,rgba(255,105,180,0.15)_0%,transparent_70%)]"></div>
+          
+          {/* Side lighting effects */}
+          <div className="absolute top-1/2 -left-20 w-40 h-80 -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08)_0%,transparent_70%)] blur-xl"></div>
+          <div className="absolute top-1/2 -right-20 w-40 h-80 -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08)_0%,transparent_70%)] blur-xl"></div>
         </div>
 
+        {/* Comic pages - only render current, prev, and next page */}
         {comicPages.map((page, index) => {
-        // Logic for current, previous, and next pages
-        const isCurrent = index === activeIndex;
-        const isPrev = index === activeIndex - 1;
-        const isNext = index === activeIndex + 1;
+          // Logic for current, previous, and next pages
+          const isCurrent = index === activeIndex;
+          const isPrev = index === activeIndex - 1;
+          const isNext = index === activeIndex + 1;
 
-        // Only render current, prev, and next pages for performance
-        if (!isCurrent && !isPrev && !isNext) return null;
+          // Only render current, prev, and next pages for performance
+          if (!isCurrent && !isPrev && !isNext) return null;
 
-        // Determine animation classes based on swipe direction
-        let animationClass = '';
-        let transformStyle = {};
-        if (swipingDirection === 'up' && isCurrent) {
-          animationClass = 'animate-swipe-up';
-        } else if (swipingDirection === 'up' && isNext) {
-          animationClass = 'animate-swipe-in animate-zoom-in-slight';
-        } else if (swipingDirection === 'down' && isCurrent) {
-          animationClass = 'animate-swipe-in animate-zoom-in-slight';
-        } else if (swipingDirection === 'down' && isPrev) {
-          animationClass = 'animate-swipe-up transform rotate-180';
-        }
+          // Determine animation classes based on swipe direction
+          let animationClass = '';
+          let transformStyle = {};
+          
+          if (swipingDirection === 'up' && isCurrent) {
+            animationClass = 'animate-swipe-up';
+          } else if (swipingDirection === 'up' && isNext) {
+            animationClass = 'animate-swipe-in animate-zoom-in-slight';
+          } else if (swipingDirection === 'down' && isCurrent) {
+            animationClass = 'animate-swipe-in animate-zoom-in-slight';
+          } else if (swipingDirection === 'down' && isPrev) {
+            animationClass = 'animate-swipe-up transform rotate-180';
+          }
 
-        // Apply dynamic transform based on current swipe
-        if (direction && isCurrent && Math.abs(swipeDistance) > 0) {
-          const translateY = direction === 'up' ? -swipeDistance : -swipeDistance;
-          const opacity = 1 - Math.min(Math.abs(swipeDistance) / 300, 0.6);
-          transformStyle = {
-            transform: `translateY(${translateY}px)`,
-            opacity
-          };
-        }
+          // Apply dynamic transform based on current swipe
+          if (direction && isCurrent && Math.abs(swipeDistance) > 0) {
+            const translateY = direction === 'up' ? -swipeDistance : -swipeDistance;
+            const opacity = 1 - Math.min(Math.abs(swipeDistance) / 300, 0.6);
+            transformStyle = {
+              transform: `translateY(${translateY}px)`,
+              opacity
+            };
+          }
 
-        // Position non-active pages
-        if (isNext) {
-          transformStyle = {
-            ...transformStyle,
-            transform: 'translateY(100%)'
-          };
-        } else if (isPrev) {
-          transformStyle = {
-            ...transformStyle,
-            transform: 'translateY(-100%)',
-            opacity: 0
-          };
-        }
-        return <ComicPage key={page.id} image={page.image} title={page.title} author={page.author} isActive={isCurrent} index={index} className={cn("transition-all duration-400", animationClass, {
-          "z-10": isCurrent,
-          "z-0": !isCurrent
-        })} style={transformStyle} />;
-      })}
+          // Position non-active pages
+          if (isNext) {
+            transformStyle = {
+              ...transformStyle,
+              transform: 'translateY(100%)'
+            };
+          } else if (isPrev) {
+            transformStyle = {
+              ...transformStyle,
+              transform: 'translateY(-100%)',
+              opacity: 0
+            };
+          }
+          
+          return (
+            <ComicPage 
+              key={page.id} 
+              image={page.image} 
+              title={page.title} 
+              author={page.author} 
+              isActive={isCurrent} 
+              index={index} 
+              className={cn(
+                "transition-all duration-400", 
+                animationClass, 
+                {
+                  "z-10": isCurrent,
+                  "z-0": !isCurrent
+                }
+              )} 
+              style={transformStyle} 
+            />
+          );
+        })}
 
         {/* Navigation Hints */}
-        {showNavigationHints && <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none z-30 opacity-70 animate-fade-in">
+        {showNavigationHints && (
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none z-30 opacity-70 animate-fade-in">
             <div className="flex flex-col items-center gap-16">
               <div className="flex flex-col items-center gap-2 text-white">
                 <ChevronUp size={36} className="animate-bounce" />
@@ -157,20 +194,27 @@ const ComicReader = () => {
                 <ChevronDown size={36} className="animate-bounce" />
               </div>
             </div>
-          </div>}
+          </div>
+        )}
 
         {/* Bottom indicator for next page */}
-        {activeIndex < comicPages.length - 1 && <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/60 gap-1 animate-pulse">
+        {activeIndex < comicPages.length - 1 && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/60 gap-1 animate-pulse">
             <ChevronDown size={20} />
             <span className="text-xs">Suivant</span>
-          </div>}
+          </div>
+        )}
         
         {/* Top indicator for previous page */}
-        {activeIndex > 0 && <div className="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/60 gap-1 animate-pulse">
+        {activeIndex > 0 && (
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/60 gap-1 animate-pulse">
             <span className="text-xs">Précédent</span>
             <ChevronUp size={20} />
-          </div>}
+          </div>
+        )}
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default ComicReader;
