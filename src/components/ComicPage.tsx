@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface ComicPageProps {
   image: string;
-  secondImage?: string; // Added second image prop
+  secondImage?: string;
   title?: string;
   author?: string;
   className?: string;
@@ -46,13 +46,13 @@ const ComicPage: React.FC<ComicPageProps> = ({
         {/* Subtle frame around the image */}
         <div className="absolute inset-0 m-1 border border-white/5 rounded-sm pointer-events-none z-0"></div>
         
-        {/* Comic images container */}
-        <div className="flex h-full w-full">
+        {/* Comic images container - MODIFIED: now displays images vertically */}
+        <div className="flex flex-col h-full w-full gap-4">
           {/* First image */}
           <div className="flex-1 h-full relative">
             <img
               src={image}
-              alt={title ? `${title} - left page` : `Comic page ${index * 2 + 1}`}
+              alt={title ? `${title} - top image` : `Comic page ${index * 2 + 1}`}
               className="absolute inset-0 w-full h-full object-contain z-10"
             />
           </div>
@@ -62,7 +62,7 @@ const ComicPage: React.FC<ComicPageProps> = ({
             <div className="flex-1 h-full relative">
               <img
                 src={secondImage}
-                alt={title ? `${title} - right page` : `Comic page ${index * 2 + 2}`}
+                alt={title ? `${title} - bottom image` : `Comic page ${index * 2 + 2}`}
                 className="absolute inset-0 w-full h-full object-contain z-10"
               />
             </div>
