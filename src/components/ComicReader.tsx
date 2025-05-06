@@ -6,6 +6,25 @@ import { cn } from '@/lib/utils';
 import comicPages from '@/data/comicPages';
 import { ChevronDown, ChevronUp, Sun } from 'lucide-react';
 
+// Convert original comic pages into paired pages (two images per page)
+const createPairedPages = () => {
+  const paired = [];
+  
+  for (let i = 0; i < comicPages.length; i += 2) {
+    paired.push({
+      id: `pair-${i}`,
+      firstImage: comicPages[i].image,
+      secondImage: comicPages[i + 1]?.image || null, // Handle odd number of pages
+      title: comicPages[i].title ? `${comicPages[i].title}${comicPages[i + 1]?.title ? ' / ' + comicPages[i + 1].title : ''}` : undefined,
+      author: comicPages[i].author
+    });
+  }
+  
+  return paired;
+};
+
+const pairedComicPages = createPairedPages();
+
 const ComicReader = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [swipingDirection, setSwipingDirection] = useState<'up' | 'down' | null>(null);
@@ -22,7 +41,7 @@ const ComicReader = () => {
   
   const goToNextPage = () => {
     if (isTransitioning) return; // Prevent multiple transitions
-    if (activeIndex < comicPages.length - 1) {
+    if (activeIndex < pairedComicPages.length - 1) {
       setSwipingDirection('up');
       setIsTransitioning(true);
       setTimeout(() => {
@@ -70,7 +89,7 @@ const ComicReader = () => {
   }, [activeIndex, isTransitioning]);
 
   // Calculate progress percentage
-  const progressPercentage = (activeIndex + 1) / comicPages.length * 100;
+  const progressPercentage = (activeIndex + 1) / pairedComicPages.length * 100;
   
   return (
     <div className="relative flex flex-col h-full w-full bg-gradient-to-b from-black via-comic to-black overflow-hidden">
@@ -82,7 +101,7 @@ const ComicReader = () => {
           </h1>
           <div className="flex flex-col items-end">
             <span className="text-xs text-white/70 mb-1">
-              {activeIndex + 1} / {comicPages.length}
+              {activeIndex + 1} / {pairedComicPages.length}
             </span>
             <div className="w-24 h-1 bg-gray-800 rounded overflow-hidden">
               <div className="h-full bg-gradient-to-r from-comic-accent to-blue-400 transition-all duration-300" style={{
@@ -113,7 +132,7 @@ const ComicReader = () => {
         </div>
 
         {/* Comic pages - only render current, prev, and next page */}
-        {comicPages.map((page, index) => {
+        {pairedComicPages.map((page, index) => {
           // Logic for current, previous, and next pages
           const isCurrent = index === activeIndex;
           const isPrev = index === activeIndex - 1;
@@ -163,7 +182,8 @@ const ComicReader = () => {
           return (
             <ComicPage 
               key={page.id} 
-              image={page.image} 
+              image={page.firstImage} 
+              secondImage={page.secondImage || undefined}
               title={page.title} 
               author={page.author} 
               isActive={isCurrent} 
@@ -198,7 +218,7 @@ const ComicReader = () => {
         )}
 
         {/* Bottom indicator for next page */}
-        {activeIndex < comicPages.length - 1 && (
+        {activeIndex < pairedComicPages.length - 1 && (
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/60 gap-1 animate-pulse">
             <ChevronDown size={20} />
             <span className="text-xs">Suivant</span>

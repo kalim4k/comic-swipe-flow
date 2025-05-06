@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface ComicPageProps {
   image: string;
+  secondImage?: string; // Added second image prop
   title?: string;
   author?: string;
   className?: string;
@@ -14,6 +15,7 @@ interface ComicPageProps {
 
 const ComicPage: React.FC<ComicPageProps> = ({
   image,
+  secondImage,
   title,
   author,
   className,
@@ -33,7 +35,7 @@ const ComicPage: React.FC<ComicPageProps> = ({
       {/* Top gradient decoration */}
       <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/60 to-transparent z-10"></div>
       
-      {/* Main image container with decorative elements */}
+      {/* Main images container with decorative elements */}
       <div className="relative flex-grow w-full my-4">
         {/* Side decorative gradients */}
         <div className="absolute inset-0 pointer-events-none z-0">
@@ -44,12 +46,28 @@ const ComicPage: React.FC<ComicPageProps> = ({
         {/* Subtle frame around the image */}
         <div className="absolute inset-0 m-1 border border-white/5 rounded-sm pointer-events-none z-0"></div>
         
-        {/* The actual comic image */}
-        <img
-          src={image}
-          alt={title || `Comic page ${index + 1}`}
-          className="absolute inset-0 w-full h-full object-contain z-10"
-        />
+        {/* Comic images container */}
+        <div className="flex h-full w-full">
+          {/* First image */}
+          <div className="flex-1 h-full relative">
+            <img
+              src={image}
+              alt={title ? `${title} - left page` : `Comic page ${index * 2 + 1}`}
+              className="absolute inset-0 w-full h-full object-contain z-10"
+            />
+          </div>
+          
+          {/* Second image (if provided) */}
+          {secondImage && (
+            <div className="flex-1 h-full relative">
+              <img
+                src={secondImage}
+                alt={title ? `${title} - right page` : `Comic page ${index * 2 + 2}`}
+                className="absolute inset-0 w-full h-full object-contain z-10"
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Bottom overlay with title and author */}
@@ -73,8 +91,6 @@ const ComicPage: React.FC<ComicPageProps> = ({
           </div>
         </div>
       )}
-
-      {/* Page indicator (moved to bottom overlay) */}
     </div>
   );
 };
