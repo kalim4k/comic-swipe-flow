@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useSwipe } from '@/hooks/useSwipe';
 import ComicPage from './ComicPage';
@@ -27,21 +26,29 @@ const createPairedPages = () => {
 
 const pairedComicPages = createPairedPages();
 
-// Add promo ads after every 7 pages
+// Add promo ads at strategic locations (after each 7 pages)
+// But skip inserting an ad after image 14 (pair-index around 7)
 const insertPromoAds = (pages) => {
   const pagesWithAds = [...pages];
   
-  // Start from index 7 (after 7th page) and add ads every 7 pages
-  // We're adding ads in reverse order so the indices stay correct as we add items
-  for (let i = Math.min(7, pages.length); i < pages.length; i += 8) {
-    // Calculate the ad type - alternate between store and message
-    const adType = Math.floor(i / 7) % 2 === 0 ? 'store' : 'message';
-    
-    pagesWithAds.splice(i, 0, {
-      id: `ad-${i}`,
-      adType: adType,
-      isAd: true
-    });
+  // Insert ads at specific positions, alternating types
+  // Start from index 7 (after 7th page) and insert ads
+  // But skip the position near image 14
+  const adPositions = [7, 15]; // After 7th page and after 15th page
+  
+  // Insert ads in reverse order to maintain correct indices
+  for (let i = adPositions.length - 1; i >= 0; i--) {
+    const position = adPositions[i];
+    if (position < pages.length) {
+      // Alternate between store and message ads
+      const adType = i % 2 === 0 ? 'message' : 'store';
+      
+      pagesWithAds.splice(position, 0, {
+        id: `ad-${position}`,
+        adType: adType,
+        isAd: true
+      });
+    }
   }
   
   return pagesWithAds;
@@ -90,8 +97,8 @@ const ComicReader = () => {
         setIsTransitioning(false);
         setSwipingDirection(null);
       }, 400); // Match this to animation duration
-    } else if (activeIndex === pagesWithAds.length - 1 && !showStoreAd && !showMessageAd) {
-      // At the end of the comic, show the store promo
+    } else if (activeIndex === pagesWithAds.length - 1) {
+      // At the end of the comic, show the store promo as final ad
       setShowStoreAd(true);
     }
   };
@@ -154,8 +161,13 @@ const ComicReader = () => {
 
   // Calculate progress percentage - exclude ads from calculation
   const totalContentPages = pairedComicPages.length;
+  // Calculate how many ads we've passed so far
+  const adsPassed = activeIndex > 0 ? 
+    pagesWithAds.slice(0, activeIndex).filter(page => page.isAd).length : 
+    0;
+  
   const progressPercentage = Math.min(
-    ((activeIndex + 1 - (activeIndex < 7 ? 0 : Math.floor(activeIndex / 8))) / totalContentPages) * 100,
+    ((activeIndex + 1 - adsPassed) / totalContentPages) * 100,
     100
   );
   
