@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { cn } from "@/lib/utils";
-
 interface ComicPageProps {
   image: string;
   secondImage?: string;
@@ -12,7 +10,6 @@ interface ComicPageProps {
   isActive: boolean;
   index: number;
 }
-
 const ComicPage: React.FC<ComicPageProps> = ({
   image,
   secondImage,
@@ -23,15 +20,7 @@ const ComicPage: React.FC<ComicPageProps> = ({
   isActive,
   index
 }) => {
-  return (
-    <div
-      className={cn(
-        "comic-page flex flex-col justify-between",
-        className
-      )}
-      style={style}
-      data-index={index}
-    >
+  return <div className={cn("comic-page flex flex-col justify-between", className)} style={style} data-index={index}>
       {/* Top gradient decoration */}
       <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/60 to-transparent z-10"></div>
       
@@ -50,49 +39,29 @@ const ComicPage: React.FC<ComicPageProps> = ({
         <div className="flex flex-col h-full w-full gap-4">
           {/* First image */}
           <div className="flex-1 h-full relative">
-            <img
-              src={image}
-              alt={title ? `${title} - top image` : `Comic page ${index * 2 + 1}`}
-              className="absolute inset-0 w-full h-full object-contain z-10"
-            />
+            <img src={image} alt={title ? `${title} - top image` : `Comic page ${index * 2 + 1}`} className="absolute inset-0 w-full h-full z-9 object-contain" />
           </div>
           
           {/* Second image (if provided) */}
-          {secondImage && (
-            <div className="flex-1 h-full relative">
-              <img
-                src={secondImage}
-                alt={title ? `${title} - bottom image` : `Comic page ${index * 2 + 2}`}
-                className="absolute inset-0 w-full h-full object-contain z-10"
-              />
-            </div>
-          )}
+          {secondImage && <div className="flex-1 h-full relative">
+              <img src={secondImage} alt={title ? `${title} - bottom image` : `Comic page ${index * 2 + 2}`} className="absolute inset-0 w-full h-full object-contain z-10" />
+            </div>}
         </div>
       </div>
 
       {/* Bottom overlay with title and author */}
-      {(title || author) && (
-        <div className="relative px-4 py-3 bg-gradient-to-t from-black/90 to-transparent z-20">
+      {(title || author) && <div className="relative px-4 py-3 bg-gradient-to-t from-black/90 to-transparent z-20">
           <div className="flex items-center justify-between">
-            {title && (
-              <div>
+            {title && <div>
                 <h2 className="text-white text-lg font-medium mb-1">{title}</h2>
-                {author && (
-                  <p className="text-comic-accent text-sm font-light">@{author}</p>
-                )}
-              </div>
-            )}
+                {author && <p className="text-comic-accent text-sm font-light">@{author}</p>}
+              </div>}
             
-            {isActive && (
-              <div className="bg-comic-accent/20 backdrop-blur-sm rounded-full px-3 py-1 border border-comic-accent/30">
+            {isActive && <div className="bg-comic-accent/20 backdrop-blur-sm rounded-full px-3 py-1 border border-comic-accent/30">
                 <span className="text-white text-xs font-medium">{index + 1}</span>
-              </div>
-            )}
+              </div>}
           </div>
-        </div>
-      )}
-    </div>
-  );
+        </div>}
+    </div>;
 };
-
 export default ComicPage;
