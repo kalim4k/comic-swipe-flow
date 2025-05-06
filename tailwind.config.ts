@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				comic: {
+					DEFAULT: '#121212',
+					accent: '#00CCFF',
+					'accent-hover': '#00A3CC'
 				}
 			},
 			borderRadius: {
@@ -84,11 +90,31 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'swipe-up': {
+					'0%': { transform: 'translateY(0)', opacity: '1' },
+					'100%': { transform: 'translateY(-100%)', opacity: '0' }
+				},
+				'swipe-in': {
+					'0%': { transform: 'translateY(100%)', opacity: '0.3' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
+				},
+				'fade-in': {
+					'0%': { opacity: '0' },
+					'100%': { opacity: '1' }
+				},
+				'zoom-in-slight': {
+					'0%': { transform: 'scale(0.98)' },
+					'100%': { transform: 'scale(1)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'swipe-up': 'swipe-up 0.4s ease-out forwards',
+				'swipe-in': 'swipe-in 0.4s ease-out forwards',
+				'fade-in': 'fade-in 0.3s ease-in-out',
+				'zoom-in-slight': 'zoom-in-slight 0.4s ease-out'
 			}
 		}
 	},
