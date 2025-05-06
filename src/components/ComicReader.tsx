@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useSwipe } from '@/hooks/useSwipe';
 import ComicPage from './ComicPage';
@@ -64,6 +65,7 @@ const ComicReader = () => {
   const [showStoreAd, setShowStoreAd] = useState(false);
   const [showMessageAd, setShowMessageAd] = useState(false);
   const [currentAdIndex, setCurrentAdIndex] = useState<number | null>(null);
+  const [isEndOfChapter, setIsEndOfChapter] = useState(false);
 
   // Hide navigation hints after a few seconds
   useEffect(() => {
@@ -88,6 +90,7 @@ const ComicReader = () => {
         if (pagesWithAds[nextIndex].isAd) {
           setCurrentAdIndex(nextIndex);
           if (pagesWithAds[nextIndex].adType === 'store') {
+            setIsEndOfChapter(false); // Mid-chapter store ad
             setShowStoreAd(true);
           } else {
             setShowMessageAd(true);
@@ -99,6 +102,7 @@ const ComicReader = () => {
       }, 400); // Match this to animation duration
     } else if (activeIndex === pagesWithAds.length - 1) {
       // At the end of the comic, show the store promo as final ad
+      setIsEndOfChapter(true); // End of chapter store ad
       setShowStoreAd(true);
     }
   };
@@ -318,7 +322,7 @@ const ComicReader = () => {
       </div>
 
       {/* Store promotion ad overlay */}
-      {showStoreAd && <StorePromoAd onClose={closeStoreAd} />}
+      {showStoreAd && <StorePromoAd onClose={closeStoreAd} variant={isEndOfChapter ? 'end-chapter' : 'mid-chapter'} />}
       
       {/* Message promotion ad overlay */}
       {showMessageAd && <MessagePromoAd onClose={closeMessageAd} />}
