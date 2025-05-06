@@ -4,7 +4,8 @@ import { useSwipe } from '@/hooks/useSwipe';
 import ComicPage from './ComicPage';
 import { cn } from '@/lib/utils';
 import comicPages from '@/data/comicPages';
-import { ChevronDown, ChevronUp, Sun } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import StorePromoAd from './StorePromoAd';
 
 // Convert original comic pages into paired pages (two images per page)
 const createPairedPages = () => {
@@ -30,6 +31,7 @@ const ComicReader = () => {
   const [swipingDirection, setSwipingDirection] = useState<'up' | 'down' | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showNavigationHints, setShowNavigationHints] = useState(true);
+  const [showStoreAd, setShowStoreAd] = useState(false);
 
   // Hide navigation hints after a few seconds
   useEffect(() => {
@@ -41,6 +43,7 @@ const ComicReader = () => {
   
   const goToNextPage = () => {
     if (isTransitioning) return; // Prevent multiple transitions
+    
     if (activeIndex < pairedComicPages.length - 1) {
       setSwipingDirection('up');
       setIsTransitioning(true);
@@ -49,6 +52,9 @@ const ComicReader = () => {
         setIsTransitioning(false);
         setSwipingDirection(null);
       }, 400); // Match this to animation duration
+    } else if (activeIndex === pairedComicPages.length - 1 && !showStoreAd) {
+      // At the end of the comic, show the store promo
+      setShowStoreAd(true);
     }
   };
   
@@ -87,6 +93,10 @@ const ComicReader = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeIndex, isTransitioning]);
+
+  const closeStoreAd = () => {
+    setShowStoreAd(false);
+  };
 
   // Calculate progress percentage
   const progressPercentage = (activeIndex + 1) / pairedComicPages.length * 100;
@@ -233,6 +243,9 @@ const ComicReader = () => {
           </div>
         )}
       </div>
+
+      {/* Store promotion ad overlay */}
+      {showStoreAd && <StorePromoAd onClose={closeStoreAd} />}
     </div>
   );
 };

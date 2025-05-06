@@ -1,0 +1,63 @@
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Gallery, Image } from 'lucide-react';
+
+interface StorePromoAdProps {
+  onClose: () => void;
+}
+
+const StorePromoAd: React.FC<StorePromoAdProps> = ({ onClose }) => {
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-purple-900/90 via-black/95 to-blue-900/90 backdrop-blur-md animate-fade-in">
+      {/* Top decorative elements */}
+      <div className="absolute top-0 left-0 w-full h-40 bg-gradient-to-b from-comic-accent/40 to-transparent opacity-70"></div>
+      
+      {/* Floating particles */}
+      <div className="absolute top-20 left-10 w-16 h-16 rounded-full bg-gradient-to-br from-comic-accent to-blue-400 blur-xl opacity-20 floating"></div>
+      <div className="absolute top-40 right-10 w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 blur-xl opacity-30 floating-delayed"></div>
+      <div className="absolute bottom-20 left-20 w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-cyan-300 blur-xl opacity-25 floating"></div>
+
+      {/* Main content */}
+      <div className="w-full max-w-md px-6 py-10 rounded-2xl bg-gradient-to-b from-black/60 to-black/20 backdrop-blur-sm border border-white/10 text-white text-center shadow-2xl">
+        <div className="mb-6">
+          <Gallery className="h-16 w-16 mx-auto mb-2 text-comic-accent" />
+          <h2 className="text-3xl font-bold tracking-tight mb-2">
+            <span className="bg-gradient-to-r from-comic-accent to-blue-400 bg-clip-text text-transparent">
+              CRAZY BD
+            </span>
+          </h2>
+          <div className="w-16 h-1 bg-gradient-to-r from-comic-accent to-blue-400 mx-auto my-4"></div>
+        </div>
+        
+        <h3 className="text-xl font-semibold mb-4">Vous avez atteint la fin du chapitre</h3>
+        
+        <p className="text-white/80 mb-8">
+          Découvrez la suite de l'histoire et bien plus dans notre boutique exclusive.
+        </p>
+        
+        <div className="space-y-4">
+          <Link to="/store" onClick={onClose}>
+            <Button className="w-full py-6 text-lg font-medium bg-gradient-to-r from-comic-accent to-blue-500 hover:from-comic-accent-hover hover:to-blue-600 border-0 shadow-lg shadow-comic-accent/20">
+              <Image className="mr-2 h-5 w-5" />
+              Visiter la boutique
+            </Button>
+          </Link>
+          
+          <button 
+            onClick={onClose} 
+            className="block w-full text-sm text-white/50 hover:text-white mt-4 transition-colors"
+          >
+            Continuer la lecture
+          </button>
+        </div>
+      </div>
+      
+      {/* Bottom decoration */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-comic-accent/20 to-transparent opacity-50"></div>
+    </div>
+  );
+};
+
+export default StorePromoAd;
