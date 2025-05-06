@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import comicPages from '@/data/comicPages';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import StorePromoAd from './StorePromoAd';
+import MessagePromoAd from './MessagePromoAd';
 
 // Convert original comic pages into paired pages (two images per page)
 const createPairedPages = () => {
@@ -26,12 +27,36 @@ const createPairedPages = () => {
 
 const pairedComicPages = createPairedPages();
 
+// Add promo ads after every 7 pages
+const insertPromoAds = (pages) => {
+  const pagesWithAds = [...pages];
+  
+  // Start from index 7 (after 7th page) and add ads every 7 pages
+  // We're adding ads in reverse order so the indices stay correct as we add items
+  for (let i = Math.min(7, pages.length); i < pages.length; i += 8) {
+    // Calculate the ad type - alternate between store and message
+    const adType = Math.floor(i / 7) % 2 === 0 ? 'store' : 'message';
+    
+    pagesWithAds.splice(i, 0, {
+      id: `ad-${i}`,
+      adType: adType,
+      isAd: true
+    });
+  }
+  
+  return pagesWithAds;
+};
+
+const pagesWithAds = insertPromoAds(pairedComicPages);
+
 const ComicReader = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [swipingDirection, setSwipingDirection] = useState<'up' | 'down' | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showNavigationHints, setShowNavigationHints] = useState(true);
   const [showStoreAd, setShowStoreAd] = useState(false);
+  const [showMessageAd, setShowMessageAd] = useState(false);
+  const [currentAdIndex, setCurrentAdIndex] = useState<number | null>(null);
 
   // Hide navigation hints after a few seconds
   useEffect(() => {
@@ -44,15 +69,28 @@ const ComicReader = () => {
   const goToNextPage = () => {
     if (isTransitioning) return; // Prevent multiple transitions
     
-    if (activeIndex < pairedComicPages.length - 1) {
+    if (activeIndex < pagesWithAds.length - 1) {
       setSwipingDirection('up');
       setIsTransitioning(true);
+      
       setTimeout(() => {
-        setActiveIndex(prev => prev + 1);
+        const nextIndex = activeIndex + 1;
+        setActiveIndex(nextIndex);
+        
+        // Check if next page is an ad
+        if (pagesWithAds[nextIndex].isAd) {
+          setCurrentAdIndex(nextIndex);
+          if (pagesWithAds[nextIndex].adType === 'store') {
+            setShowStoreAd(true);
+          } else {
+            setShowMessageAd(true);
+          }
+        }
+        
         setIsTransitioning(false);
         setSwipingDirection(null);
       }, 400); // Match this to animation duration
-    } else if (activeIndex === pairedComicPages.length - 1 && !showStoreAd) {
+    } else if (activeIndex === pagesWithAds.length - 1 && !showStoreAd && !showMessageAd) {
       // At the end of the comic, show the store promo
       setShowStoreAd(true);
     }
@@ -96,10 +134,30 @@ const ComicReader = () => {
 
   const closeStoreAd = () => {
     setShowStoreAd(false);
+    
+    // If closing an ad in the middle of the comic, move to next page
+    if (currentAdIndex !== null && currentAdIndex === activeIndex) {
+      setActiveIndex(currentAdIndex + 1);
+      setCurrentAdIndex(null);
+    }
+  };
+  
+  const closeMessageAd = () => {
+    setShowMessageAd(false);
+    
+    // If closing an ad in the middle of the comic, move to next page
+    if (currentAdIndex !== null && currentAdIndex === activeIndex) {
+      setActiveIndex(currentAdIndex + 1);
+      setCurrentAdIndex(null);
+    }
   };
 
-  // Calculate progress percentage
-  const progressPercentage = (activeIndex + 1) / pairedComicPages.length * 100;
+  // Calculate progress percentage - exclude ads from calculation
+  const totalContentPages = pairedComicPages.length;
+  const progressPercentage = Math.min(
+    ((activeIndex + 1 - (activeIndex < 7 ? 0 : Math.floor(activeIndex / 8))) / totalContentPages) * 100,
+    100
+  );
   
   return (
     <div className="relative flex flex-col h-full w-full bg-gradient-to-b from-black via-comic to-black overflow-hidden">
@@ -111,7 +169,7 @@ const ComicReader = () => {
           </h1>
           <div className="flex flex-col items-end">
             <span className="text-xs text-white/70 mb-1">
-              {activeIndex + 1} / {pairedComicPages.length}
+              {activeIndex + 1 - (activeIndex < 7 ? 0 : Math.floor(activeIndex / 8))} / {totalContentPages}
             </span>
             <div className="w-24 h-1 bg-gray-800 rounded overflow-hidden">
               <div className="h-full bg-gradient-to-r from-comic-accent to-blue-400 transition-all duration-300" style={{
@@ -141,8 +199,11 @@ const ComicReader = () => {
           <div className="absolute top-1/2 -right-20 w-40 h-80 -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08)_0%,transparent_70%)] blur-xl"></div>
         </div>
 
-        {/* Comic pages - only render current, prev, and next page */}
-        {pairedComicPages.map((page, index) => {
+        {/* Comic pages - only render content pages (skip ad placeholders) */}
+        {pagesWithAds.map((page, index) => {
+          // Skip rendering ad placeholders - ads are rendered separately
+          if (page.isAd) return null;
+          
           // Logic for current, previous, and next pages
           const isCurrent = index === activeIndex;
           const isPrev = index === activeIndex - 1;
@@ -228,7 +289,7 @@ const ComicReader = () => {
         )}
 
         {/* Bottom indicator for next page */}
-        {activeIndex < pairedComicPages.length - 1 && (
+        {activeIndex < pagesWithAds.length - 1 && (
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/60 gap-1 animate-pulse">
             <ChevronDown size={20} />
             <span className="text-xs">Suivant</span>
@@ -246,6 +307,9 @@ const ComicReader = () => {
 
       {/* Store promotion ad overlay */}
       {showStoreAd && <StorePromoAd onClose={closeStoreAd} />}
+      
+      {/* Message promotion ad overlay */}
+      {showMessageAd && <MessagePromoAd onClose={closeMessageAd} />}
     </div>
   );
 };
