@@ -3,40 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSwipe } from '@/hooks/useSwipe';
 import ComicPage from './ComicPage';
 import { cn } from '@/lib/utils';
-
-// Sample mock data for comics
-const mockComicPages = [
-  {
-    id: 1,
-    image: '/lovable-uploads/9d336dc6-1fec-4517-a07f-4939fb584285.png', // Using the uploaded image
-    title: "La Cité Éternelle",
-    author: "artiste_bd"
-  },
-  {
-    id: 2,
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5",
-    title: "Le Secret de l'Ombre",
-    author: "artiste_bd"
-  },
-  {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-    title: "Code Mystérieux",
-    author: "artiste_bd"
-  },
-  {
-    id: 4,
-    image: "https://images.unsplash.com/photo-1486718448742-163732cd1544",
-    title: "La Vague",
-    author: "artiste_bd"
-  },
-  {
-    id: 5,
-    image: "https://images.unsplash.com/photo-1439337153520-7082a56a81f4",
-    title: "La Structure Finale",
-    author: "artiste_bd"
-  }
-];
+import comicPages from '@/data/comicPages';
 
 const ComicReader = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -46,7 +13,7 @@ const ComicReader = () => {
   const goToNextPage = () => {
     if (isTransitioning) return;
     
-    if (activeIndex < mockComicPages.length - 1) {
+    if (activeIndex < comicPages.length - 1) {
       setSwipingDirection('up');
       setIsTransitioning(true);
       setTimeout(() => {
@@ -93,10 +60,10 @@ const ComicReader = () => {
 
   return (
     <div 
-      className="comic-swipe-container bg-comic w-full h-full overflow-hidden"
+      className="comic-swipe-container bg-black w-full h-full overflow-hidden"
       {...swipeHandlers}
     >
-      {mockComicPages.map((page, index) => {
+      {comicPages.map((page, index) => {
         // Logic for current, previous, and next pages
         const isCurrent = index === activeIndex;
         const isPrev = index === activeIndex - 1;
