@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Gallery, Image } from 'lucide-react';
+import { Book, Image } from 'lucide-react';
 
 interface StorePromoAdProps {
   onClose: () => void;
@@ -22,7 +22,7 @@ const StorePromoAd: React.FC<StorePromoAdProps> = ({ onClose }) => {
       {/* Main content */}
       <div className="w-full max-w-md px-6 py-10 rounded-2xl bg-gradient-to-b from-black/60 to-black/20 backdrop-blur-sm border border-white/10 text-white text-center shadow-2xl">
         <div className="mb-6">
-          <Gallery className="h-16 w-16 mx-auto mb-2 text-comic-accent" />
+          <Book className="h-16 w-16 mx-auto mb-2 text-comic-accent" />
           <h2 className="text-3xl font-bold tracking-tight mb-2">
             <span className="bg-gradient-to-r from-comic-accent to-blue-400 bg-clip-text text-transparent">
               CRAZY BD
