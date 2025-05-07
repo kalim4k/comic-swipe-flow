@@ -1,6 +1,6 @@
 
 import BottomNavigation from '@/components/BottomNavigation';
-import { Store } from 'lucide-react';
+import { Store, ShoppingCart } from 'lucide-react';
 import comics from '@/data/comics';
 import ComicGrid from '@/components/ComicGrid';
 
