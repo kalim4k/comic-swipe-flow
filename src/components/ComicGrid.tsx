@@ -40,7 +40,7 @@ const ComicGrid = ({ comics, itemsPerPage = 6 }: ComicGridProps) => {
   
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+      <div className="flex flex-col gap-6">
         {currentComics.map((comic) => (
           <ComicCard key={comic.id} comic={comic} />
         ))}
