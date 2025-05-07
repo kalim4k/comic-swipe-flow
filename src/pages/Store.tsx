@@ -5,7 +5,7 @@ import { Store, Search } from 'lucide-react';
 import comics from '@/data/comics';
 import ComicGrid from '@/components/ComicGrid';
 import { Button } from '@/components/ui/button';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
 
 const StorePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -139,23 +139,25 @@ const StorePage = () => {
             <p>{filteredComics.length} BD{filteredComics.length !== 1 ? 's' : ''} trouvée{filteredComics.length !== 1 ? 's' : ''}</p>
           </div>
           
-          {/* Comics grid */}
-          {filteredComics.length > 0 ? (
-            <ComicGrid comics={filteredComics} />
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-white/60 text-lg">Aucune BD trouvée avec ces critères</p>
-              <Button 
-                className="mt-4 bg-gradient-to-r from-comic-accent to-blue-500 hover:from-comic-accent-hover hover:to-blue-600"
-                onClick={() => {
-                  setSearchQuery('');
-                  setPriceFilter('all');
-                }}
-              >
-                Réinitialiser les filtres
-              </Button>
-            </div>
-          )}
+          {/* Comics grid - now displaying all comics in a scrollable container */}
+          <div className="overflow-y-auto">
+            {filteredComics.length > 0 ? (
+              <ComicGrid comics={filteredComics} />
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-white/60 text-lg">Aucune BD trouvée avec ces critères</p>
+                <Button 
+                  className="mt-4 bg-gradient-to-r from-comic-accent to-blue-500 hover:from-comic-accent-hover hover:to-blue-600"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setPriceFilter('all');
+                  }}
+                >
+                  Réinitialiser les filtres
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       </main>
 
