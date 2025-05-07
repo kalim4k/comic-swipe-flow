@@ -1,8 +1,7 @@
 
 import { Comic } from '@/data/comics';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Book } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ComicCardProps {
@@ -11,10 +10,10 @@ interface ComicCardProps {
 
 const ComicCard = ({ comic }: ComicCardProps) => {
   return (
-    <Card className="overflow-hidden bg-black/30 border border-white/10 backdrop-blur-sm rounded-xl relative group">
-      <div className="flex flex-col md:flex-row">
+    <Link to={`/comic/${comic.id}`}>
+      <Card className="overflow-hidden bg-white rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
         {/* Cover image */}
-        <div className="relative aspect-[2/3] w-full md:w-1/3">
+        <div className="relative aspect-square w-full">
           <img 
             src={comic.coverImage} 
             alt={comic.title} 
@@ -23,22 +22,17 @@ const ComicCard = ({ comic }: ComicCardProps) => {
         </div>
         
         {/* Content */}
-        <div className="p-4 flex flex-col justify-between w-full md:w-2/3">
-          <div>
-            <h3 className="text-white font-bold text-xl mb-2">{comic.title}</h3>
-            <p className="text-white/70 text-lg font-semibold mb-4">{comic.price} {comic.currency}</p>
+        <div className="p-3 flex flex-col flex-1">
+          <h3 className="text-gray-700 font-medium text-sm line-clamp-2 mb-2">{comic.title}</h3>
+          <div className="mt-auto flex items-center justify-between">
+            <p className="text-orange-500 font-semibold">{comic.price} {comic.currency}</p>
+            <div className="text-orange-500">
+              <ShoppingCart size={16} />
+            </div>
           </div>
-          
-          <Link to={`/comic/${comic.id}`}>
-            <Button 
-              className="w-full bg-gradient-to-r from-comic-accent to-blue-500 hover:from-comic-accent-hover hover:to-blue-600 text-white"
-            >
-              <Book className="mr-2 h-4 w-4" /> Voir les extraits
-            </Button>
-          </Link>
         </div>
-      </div>
-    </Card>
+      </Card>
+    </Link>
   );
 };
 

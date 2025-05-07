@@ -8,12 +8,10 @@ interface ComicGridProps {
 
 const ComicGrid = ({ comics }: ComicGridProps) => {
   return (
-    <div>
-      <div className="flex flex-col gap-6">
-        {comics.map((comic) => (
-          <ComicCard key={comic.id} comic={comic} />
-        ))}
-      </div>
+    <div className="grid grid-cols-2 gap-4">
+      {comics.map((comic) => (
+        <ComicCard key={comic.id} comic={comic} />
+      ))}
     </div>
   );
 };
