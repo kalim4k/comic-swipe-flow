@@ -21,6 +21,11 @@ const ComicCard = ({ comic }: ComicCardProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleViewPreview = () => {
+    setIsDialogOpen(true);
+    // Only open the PDF in a new tab if user clicks the preview button inside the dialog
+  };
+
+  const handleOpenPdf = () => {
     if (comic.pdfPreview) {
       window.open(comic.pdfPreview, '_blank');
     }
@@ -88,7 +93,7 @@ const ComicCard = ({ comic }: ComicCardProps) => {
                 <Button 
                   variant="outline" 
                   className="flex gap-2" 
-                  onClick={handleViewPreview}
+                  onClick={handleOpenPdf}
                 >
                   <FileText size={16} />
                   Voir un extrait
