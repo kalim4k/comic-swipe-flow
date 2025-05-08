@@ -20,6 +20,12 @@ interface ComicCardProps {
 const ComicCard = ({ comic }: ComicCardProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const handleViewPreview = () => {
+    if (comic.pdfPreview) {
+      window.open(comic.pdfPreview, '_blank');
+    }
+  };
+
   return (
     <div className="flex flex-col bg-white rounded-lg overflow-hidden shadow-md border border-gray-100">
       <div className="relative aspect-[4/3] overflow-hidden">
@@ -49,6 +55,7 @@ const ComicCard = ({ comic }: ComicCardProps) => {
             variant="outline" 
             className="w-full flex gap-2 text-xs border-orange-500 text-orange-500 hover:bg-orange-50"
             size="sm"
+            onClick={handleViewPreview}
           >
             <FileText size={16} />
             VOIR UN EXTRAIT
@@ -72,7 +79,11 @@ const ComicCard = ({ comic }: ComicCardProps) => {
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-                <Button variant="outline" className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  className="flex gap-2" 
+                  onClick={handleViewPreview}
+                >
                   <FileText size={16} />
                   Voir un extrait
                 </Button>
