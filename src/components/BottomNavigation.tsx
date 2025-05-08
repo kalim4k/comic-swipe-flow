@@ -1,7 +1,7 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { List, ShoppingCart, MessageSquare, Video } from 'lucide-react';
+import { List, ShoppingCart, MessageSquare } from 'lucide-react';
 
 const BottomNavigation = () => {
   const location = useLocation();
@@ -17,11 +17,6 @@ const BottomNavigation = () => {
       name: 'Boutique',
       path: '/store',
       icon: ShoppingCart
-    },
-    {
-      name: 'Vidéo',
-      path: '/video',
-      icon: Video
     },
     {
       name: 'Message',

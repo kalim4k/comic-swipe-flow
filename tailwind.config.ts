@@ -126,10 +126,6 @@ export default {
 				'floating-delayed': {
 					'0%, 100%': { transform: 'translateY(-5px)' },
 					'50%': { transform: 'translateY(5px)' }
-				},
-				'spin-slow': {
-					'0%': { transform: 'rotate(0deg)' },
-					'100%': { transform: 'rotate(360deg)' }
 				}
 			},
 			animation: {
@@ -143,8 +139,7 @@ export default {
 				'bounce': 'bounce 1s infinite',
 				'bounce-slight': 'bounce-slight 2s ease-in-out infinite',
 				'floating': 'floating 3s ease-in-out infinite',
-				'floating-delayed': 'floating-delayed 3.5s ease-in-out infinite',
-				'spin-slow': 'spin-slow 8s linear infinite'
+				'floating-delayed': 'floating-delayed 3.5s ease-in-out infinite'
 			}
 		}
 	},
