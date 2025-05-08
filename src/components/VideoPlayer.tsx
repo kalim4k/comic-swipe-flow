@@ -1,6 +1,6 @@
 
 import { useState, useRef, useEffect } from 'react';
-import { Heart, MessageSquare, Share, Pause, Play, Link, MoreHorizontal } from 'lucide-react';
+import { Heart, MessageSquare, Share, Pause, Play, Link, MoreHorizontal, VolumeX } from 'lucide-react';
 
 interface Video {
   id: number;
@@ -21,6 +21,7 @@ interface VideoPlayerProps {
 const VideoPlayer = ({ video }: VideoPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Démarrer la vidéo automatiquement
@@ -57,6 +58,13 @@ const VideoPlayer = ({ video }: VideoPlayerProps) => {
 
   const toggleLike = () => {
     setLiked(!liked);
+  };
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(!isMuted);
+    }
   };
 
   const extractHashtags = (text: string) => {
@@ -161,6 +169,14 @@ const VideoPlayer = ({ video }: VideoPlayerProps) => {
             <Share size={26} className="text-white" />
           </div>
           <span className="text-xs mt-1">{video.shares}</span>
+        </button>
+        
+        {/* Bouton Mute */}
+        <button onClick={toggleMute} className="flex flex-col items-center">
+          <div className="w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center">
+            <VolumeX size={24} className="text-white" />
+          </div>
+          <span className="text-xs mt-1">Mute</span>
         </button>
         
         {/* Bouton Lien */}
