@@ -6,7 +6,7 @@ import comicBooks from '@/data/comicBooks';
 
 const StorePage = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 overflow-y-auto pb-16">
+    <div className="min-h-screen flex flex-col bg-gray-50 overflow-y-auto pb-24">
       <main className="flex-1 p-4 pb-24 max-w-screen-lg mx-auto">
         <div className="mb-6">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-comic-accent to-blue-500 flex items-center justify-center">

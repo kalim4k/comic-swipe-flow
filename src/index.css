@@ -42,7 +42,7 @@
 
   html, body {
     @apply bg-comic text-foreground;
-    overflow: hidden;
+    overflow-y: auto;
     overscroll-behavior: none;
     -webkit-touch-callout: none;
     -webkit-user-select: none;

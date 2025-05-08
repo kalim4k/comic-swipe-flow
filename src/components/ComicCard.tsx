@@ -40,6 +40,7 @@ const ComicCard = ({ comic }: ComicCardProps) => {
           <Button 
             className="bg-orange-500 hover:bg-orange-600 w-full flex gap-2 text-xs"
             size="sm"
+            onClick={() => setIsDialogOpen(true)}
           >
             <ShoppingCart size={16} />
             ACHETER
@@ -55,15 +56,6 @@ const ComicCard = ({ comic }: ComicCardProps) => {
         </div>
         
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="hidden rounded-full text-orange-500"
-            >
-              <ShoppingCart size={20} />
-            </Button>
-          </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>{comic.title}</DialogTitle>
