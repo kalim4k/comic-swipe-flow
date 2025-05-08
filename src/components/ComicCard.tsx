@@ -26,6 +26,12 @@ const ComicCard = ({ comic }: ComicCardProps) => {
     }
   };
 
+  const handlePurchase = () => {
+    if (comic.purchaseLink) {
+      window.open(comic.purchaseLink, '_blank');
+    }
+  };
+
   return (
     <div className="flex flex-col bg-white rounded-lg overflow-hidden shadow-md border border-gray-100">
       <div className="relative aspect-[4/3] overflow-hidden">
@@ -46,7 +52,7 @@ const ComicCard = ({ comic }: ComicCardProps) => {
           <Button 
             className="bg-orange-500 hover:bg-orange-600 w-full flex gap-2 text-xs"
             size="sm"
-            onClick={() => setIsDialogOpen(true)}
+            onClick={handlePurchase}
           >
             <ShoppingCart size={16} />
             ACHETER
@@ -87,7 +93,10 @@ const ComicCard = ({ comic }: ComicCardProps) => {
                   <FileText size={16} />
                   Voir un extrait
                 </Button>
-                <Button className="bg-orange-500 hover:bg-orange-600 flex gap-2">
+                <Button 
+                  className="bg-orange-500 hover:bg-orange-600 flex gap-2"
+                  onClick={handlePurchase}
+                >
                   <ShoppingCart size={16} />
                   Acheter
                 </Button>

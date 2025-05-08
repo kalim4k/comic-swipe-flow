@@ -5,7 +5,8 @@ export interface ComicBook {
   coverImage: string;
   price: number;
   currency: string;
-  pdfPreview?: string; // Ajout du lien vers le PDF
+  pdfPreview?: string;
+  purchaseLink?: string; // Ajout du lien d'achat
 }
 
 const comicBooks: ComicBook[] = [
@@ -15,7 +16,8 @@ const comicBooks: ComicBook[] = [
     coverImage: "https://tikroom.net/wp-content/uploads/2025/05/001-Copie.webp",
     price: 900,
     currency: "FCFA",
-    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/moms-help.pdf"
+    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/moms-help.pdf",
+    purchaseLink: "https://chyijmmr.mychariow.com/prd_uv9cx8"
   },
   {
     id: 2,
@@ -23,7 +25,8 @@ const comicBooks: ComicBook[] = [
     coverImage: "https://tikroom.net/wp-content/uploads/2025/05/001-1.jpg",
     price: 1600,
     currency: "FCFA",
-    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/the-gandma-2.pdf"
+    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/the-gandma-2.pdf",
+    purchaseLink: "https://chyijmmr.mychariow.com/prd_u6qbj6"
   },
   {
     id: 3,
@@ -31,7 +34,8 @@ const comicBooks: ComicBook[] = [
     coverImage: "https://tikroom.net/wp-content/uploads/2025/05/001-15.jpg",
     price: 1500,
     currency: "FCFA",
-    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/sister-grace.pdf"
+    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/sister-grace.pdf",
+    purchaseLink: "https://chyijmmr.mychariow.com/prd_tj6svr"
   },
   {
     id: 4,
@@ -39,7 +43,8 @@ const comicBooks: ComicBook[] = [
     coverImage: "https://tikroom.net/wp-content/uploads/2025/05/001-11.jpg",
     price: 700,
     currency: "FCFA",
-    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/daddy-crazy-desire.pdf"
+    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/daddy-crazy-desire.pdf",
+    purchaseLink: "https://chyijmmr.mychariow.com/prd_5i3mw6"
   },
   {
     id: 5,
@@ -47,7 +52,8 @@ const comicBooks: ComicBook[] = [
     coverImage: "https://tikroom.net/wp-content/uploads/2025/05/001-7.jpg",
     price: 1500,
     currency: "FCFA",
-    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/big-black-cocks.pdf"
+    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/big-black-cocks.pdf",
+    purchaseLink: "https://chyijmmr.mychariow.com/prd_7z8ssp"
   },
   {
     id: 6,
@@ -55,7 +61,8 @@ const comicBooks: ComicBook[] = [
     coverImage: "https://tikroom.net/wp-content/uploads/2025/05/001-Copie.jpg",
     price: 1900,
     currency: "FCFA",
-    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/miranda.pdf"
+    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/miranda.pdf",
+    purchaseLink: "https://chyijmmr.mychariow.com/prd_qdcx6g"
   },
   {
     id: 7,
@@ -63,7 +70,8 @@ const comicBooks: ComicBook[] = [
     coverImage: "https://tikroom.net/wp-content/uploads/2025/05/Father-in-Law-at-Home_1_1-scaled.jpg",
     price: 1500,
     currency: "FCFA",
-    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/father-in-law-at-home.pdf"
+    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/father-in-law-at-home.pdf",
+    purchaseLink: "https://chyijmmr.mychariow.com/prd_xwve84"
   },
   {
     id: 8,
@@ -71,7 +79,8 @@ const comicBooks: ComicBook[] = [
     coverImage: "https://tikroom.net/wp-content/uploads/2025/05/001-19.jpg",
     price: 1200,
     currency: "FCFA",
-    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/madison.pdf"
+    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/madison.pdf",
+    purchaseLink: "https://chyijmmr.mychariow.com/prd_520190"
   },
   {
     id: 9,
@@ -79,7 +88,8 @@ const comicBooks: ComicBook[] = [
     coverImage: "https://tikroom.net/wp-content/uploads/2025/05/001-20.jpg",
     price: 1500,
     currency: "FCFA",
-    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/caroline.pdf"
+    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/caroline.pdf",
+    purchaseLink: "https://chyijmmr.mychariow.com/prd_apjb06"
   },
   {
     id: 10,
@@ -87,7 +97,8 @@ const comicBooks: ComicBook[] = [
     coverImage: "https://tikroom.net/wp-content/uploads/2025/05/001-4.jpg",
     price: 900,
     currency: "FCFA",
-    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/clarice.pdf"
+    pdfPreview: "https://celinaroom.com/wp-content/uploads/2025/05/clarice.pdf",
+    purchaseLink: "https://chyijmmr.mychariow.com/prd_xwve84"
   },
 ];
 
