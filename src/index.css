@@ -97,3 +97,57 @@
   animation: floatingParticles 4s ease-in-out infinite;
   animation-delay: 2s;
 }
+
+/* Review system animations */
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-out-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(255, 105, 180, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+.animate-fade-out {
+  animation: fade-out-up 0.5s ease-out forwards;
+}
+
+.animate-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+/* Star rating animations */
+@keyframes star-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.star-animate {
+  animation: star-pulse 0.3s ease-in-out;
+}
