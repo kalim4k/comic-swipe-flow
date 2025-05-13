@@ -151,3 +151,32 @@
 .star-animate {
   animation: star-pulse 0.3s ease-in-out;
 }
+
+/* Video feed animations */
+@keyframes bounce-slight {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-bounce-slight {
+  animation: bounce-slight 2.5s ease-in-out infinite;
+}
+
+/* Overlay transition */
+.overlay-enter {
+  opacity: 0;
+}
+
+.overlay-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}
+
+.overlay-exit {
+  opacity: 1;
+}
+
+.overlay-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
