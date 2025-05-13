@@ -8,9 +8,10 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface VideoFeedProps {
   onComplete?: () => void;
+  onScroll?: () => void;
 }
 
-const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
+const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete, onScroll }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -19,14 +20,22 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
   const handleNextVideo = () => {
     if (currentIndex < videoFeed.length - 1) {
       setCurrentIndex(currentIndex + 1);
-    } else if (onComplete) {
-      onComplete();
+      if (onScroll) onScroll();
+    } else {
+      // Boucler au début plutôt que d'appeler onComplete
+      setCurrentIndex(0);
+      if (onScroll) onScroll();
     }
   };
 
   const handlePrevVideo = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+      if (onScroll) onScroll();
+    } else {
+      // Boucler à la fin
+      setCurrentIndex(videoFeed.length - 1);
+      if (onScroll) onScroll();
     }
   };
 
@@ -55,6 +64,11 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
 
   const handleVideoEnd = () => {
     handleNextVideo();
+    
+    // Déclencher onComplete seulement à la fin d'une boucle complète
+    if (currentIndex === videoFeed.length - 1 && onComplete) {
+      onComplete();
+    }
   };
 
   const handleImageLoad = () => {
@@ -130,10 +144,10 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
             </div>
           )}
 
-          {/* Swipe indicators */}
-          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex flex-col items-center justify-between h-3/4 pointer-events-none opacity-50">
-            <ChevronUp className="w-10 h-10 text-white/70 animate-bounce-slight" />
-            <ChevronDown className="w-10 h-10 text-white/70 animate-bounce-slight" />
+          {/* Swipe indicators with enhanced animation */}
+          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex flex-col items-center justify-between h-3/4 pointer-events-none opacity-70">
+            <ChevronUp className="w-10 h-10 text-white/90 animate-bounce-slight filter drop-shadow-lg" />
+            <ChevronDown className="w-10 h-10 text-white/90 animate-bounce-slight filter drop-shadow-lg" />
           </div>
         </AspectRatio>
       </div>
