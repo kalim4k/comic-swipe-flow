@@ -78,10 +78,6 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete, emojiRef }) => {
     }
   }, [currentIndex, isPlaying, emojiRef]);
 
-  const handleVideoEnd = () => {
-    handleNextVideo();
-  };
-
   const handleImageLoad = () => {
     // Show image for 3 seconds then move to the next item
     const timer = setTimeout(() => {
@@ -99,13 +95,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete, emojiRef }) => {
       emojiRef.current.triggerEmojis(4);
     }
     
-    if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      videoRef.current.play();
-      setIsPlaying(true);
-    }
+    // Video clicks now only trigger emojis but don't pause the video
   };
 
   if (!currentItem) return null;
@@ -125,15 +115,12 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete, emojiRef }) => {
           {currentItem.type === 'video' ? (
             <video
               ref={videoRef}
-              className={cn(
-                "w-full h-full object-cover",
-                isPlaying ? "" : "opacity-80"
-              )}
+              className="w-full h-full object-cover"
               src={currentItem.url}
-              onEnded={handleVideoEnd}
               onClick={handleVideoClick}
               playsInline
               muted
+              loop
             />
           ) : (
             <img
@@ -148,23 +135,6 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete, emojiRef }) => {
                 }
               }}
             />
-          )}
-
-          {/* Video controls overlay */}
-          {currentItem.type === 'video' && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              {!isPlaying && (
-                <div className="w-16 h-16 bg-black/50 rounded-full flex items-center justify-center">
-                  <svg
-                    className="w-8 h-8 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-              )}
-            </div>
           )}
 
           {/* Swipe indicators */}
