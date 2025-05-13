@@ -15,11 +15,20 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const currentItem = videoFeed[currentIndex];
+  const adShownRef = useRef(false);
 
   const handleNextVideo = () => {
     if (currentIndex < videoFeed.length - 1) {
       setCurrentIndex(currentIndex + 1);
-    } else if (onComplete) {
+    } else {
+      // Loop back to the first video when reaching the end
+      setCurrentIndex(0);
+    }
+    
+    // Trigger onComplete only once when reaching the last item 
+    // and only if we haven't shown the ad yet
+    if (currentIndex === videoFeed.length - 2 && onComplete && !adShownRef.current) {
+      adShownRef.current = true;
       onComplete();
     }
   };
@@ -27,6 +36,9 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
   const handlePrevVideo = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+    } else {
+      // Loop to the last video when at the beginning and going backwards
+      setCurrentIndex(videoFeed.length - 1);
     }
   };
 
