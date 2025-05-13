@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useSwipe } from '@/hooks/useSwipe';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import EmojiEffects from './EmojiEffects';
 
 interface VideoFeedProps {
   onComplete?: () => void;
@@ -13,12 +14,15 @@ interface VideoFeedProps {
 const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [showEmojiEffect, setShowEmojiEffect] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const currentItem = videoFeed[currentIndex];
 
   const handleNextVideo = () => {
     if (currentIndex < videoFeed.length - 1) {
       setCurrentIndex(currentIndex + 1);
+      setShowEmojiEffect(true);
+      setTimeout(() => setShowEmojiEffect(false), 100);
     } else if (onComplete) {
       onComplete();
     }
@@ -27,6 +31,8 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
   const handlePrevVideo = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+      setShowEmojiEffect(true);
+      setTimeout(() => setShowEmojiEffect(false), 100);
     }
   };
 
@@ -85,10 +91,12 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
     : { transform: 'translateY(0)', transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)' };
 
   return (
-    <div className="relative w-full h-full overflow-hidden" {...swipeHandlers}>
+    <div className="relative w-full h-full overflow-hidden">
+      <EmojiEffects />
       <div 
         className="w-full h-full" 
         style={transformStyle}
+        {...swipeHandlers}
       >
         <AspectRatio ratio={9/16} className="bg-black overflow-hidden rounded-lg shadow-lg">
           {currentItem.type === 'video' ? (
