@@ -130,22 +130,6 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
             </div>
           )}
 
-          {/* Progress indicator */}
-          <div className="absolute top-2 left-2 right-2 flex gap-1">
-            {videoFeed.map((_, i) => (
-              <div
-                key={i}
-                className={`h-1 rounded-full flex-1 ${
-                  i < currentIndex
-                    ? "bg-white"
-                    : i === currentIndex
-                    ? "bg-white/80 animate-pulse"
-                    : "bg-white/30"
-                }`}
-              />
-            ))}
-          </div>
-
           {/* Swipe indicators */}
           <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex flex-col items-center justify-between h-3/4 pointer-events-none opacity-50">
             <ChevronUp className="w-10 h-10 text-white/70 animate-bounce-slight" />

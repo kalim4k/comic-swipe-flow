@@ -7,16 +7,6 @@ export interface VideoItem {
 
 const videoFeed: VideoItem[] = [
   {
-    id: 'video-1',
-    url: 'https://tikroom.net/wp-content/uploads/2025/05/video_2025-05-13_09-04-36.mp4',
-    type: 'video'
-  },
-  {
-    id: 'video-2',
-    url: 'https://tikroom.net/wp-content/uploads/2025/05/video_2025-05-13_08-53-34.mp4',
-    type: 'video'
-  },
-  {
     id: 'video-3',
     url: 'https://tikroom.net/wp-content/uploads/2025/05/video_2025-05-13_09-05-08.mp4',
     type: 'video'
