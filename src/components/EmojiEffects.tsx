@@ -18,10 +18,10 @@ const EmojiEffects: React.FC = () => {
 
   const createEmoji = () => {
     // Create a random position for the emoji
-    const id = Date.now();
+    const id = Date.now() + Math.random();
     const x = Math.random() * (window.innerWidth - 50);
-    const y = window.innerHeight - 100;
-    const scale = 0.5 + Math.random() * 1.5;
+    const y = window.innerHeight - 50; // Position at bottom of screen
+    const scale = 0.8 + Math.random() * 1.2;
     const rotation = -20 + Math.random() * 40;
     const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 
@@ -65,7 +65,6 @@ const EmojiEffects: React.FC = () => {
             transform: `scale(${emoji.scale}) rotate(${emoji.rotation}deg)`,
             opacity: emoji.opacity,
             fontSize: '2.5rem',
-            transition: 'transform 0.2s ease-out',
           }}
         >
           {emoji.emoji}
