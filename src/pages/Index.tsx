@@ -4,60 +4,31 @@ import ComicReader from '@/components/ComicReader';
 import BottomNavigation from '@/components/BottomNavigation';
 import VideoFeed from '@/components/VideoFeed';
 import AmiraAd from '@/components/AmiraAd';
-import EmojiEffects from '@/components/EmojiEffects';
 
 const Index = () => {
   const [showVideoFeed, setShowVideoFeed] = useState(true);
   const [showAmiraAd, setShowAmiraAd] = useState(false);
   const [showComicReader, setShowComicReader] = useState(false);
-  const [scrollCount, setScrollCount] = useState(0);
-  const [adShown, setAdShown] = useState(false);
 
   const handleVideoFeedComplete = () => {
-    if (!adShown) {
-      setShowAmiraAd(true);
-      setAdShown(true);
-    }
+    setShowAmiraAd(true);
   };
 
   const handleAmiraAdClose = () => {
     setShowAmiraAd(false);
-    // Permettre à l'utilisateur de continuer à scroller
-  };
-
-  const handleScroll = () => {
-    setScrollCount(prev => prev + 1);
-    
-    // Montrer la pub après quelques scrolls si ce n'est pas déjà fait
-    if (scrollCount > 3 && !adShown && !showAmiraAd) {
-      handleVideoFeedComplete();
-    }
-  };
-
-  const toggleComicReader = () => {
-    setShowComicReader(!showComicReader);
-    setShowVideoFeed(!showVideoFeed);
+    setShowComicReader(true);
   };
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-1 relative">
-        {showVideoFeed && (
+      <main className="flex-1">
+        {showVideoFeed && !showComicReader && (
           <div className="h-[calc(100vh-64px)]">
-            <VideoFeed onComplete={handleVideoFeedComplete} onScroll={handleScroll} />
+            <VideoFeed onComplete={handleVideoFeedComplete} />
           </div>
         )}
         {showComicReader && <ComicReader />}
         {showAmiraAd && <AmiraAd onClose={handleAmiraAdClose} />}
-        <EmojiEffects scrollCount={scrollCount} />
-        
-        {/* Button to toggle between video feed and comic reader */}
-        <button 
-          onClick={toggleComicReader}
-          className="fixed bottom-20 right-4 z-40 bg-gradient-to-r from-pink-500 to-purple-500 text-white p-2 rounded-full shadow-lg"
-        >
-          {showVideoFeed ? "Voir BD" : "Voir Vidéos"}
-        </button>
       </main>
       <BottomNavigation />
     </div>
