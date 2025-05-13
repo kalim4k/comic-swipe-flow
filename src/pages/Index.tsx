@@ -34,6 +34,11 @@ const Index = () => {
     }
   };
 
+  const toggleComicReader = () => {
+    setShowComicReader(!showComicReader);
+    setShowVideoFeed(!showVideoFeed);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-1 relative">
@@ -45,6 +50,14 @@ const Index = () => {
         {showComicReader && <ComicReader />}
         {showAmiraAd && <AmiraAd onClose={handleAmiraAdClose} />}
         <EmojiEffects scrollCount={scrollCount} />
+        
+        {/* Button to toggle between video feed and comic reader */}
+        <button 
+          onClick={toggleComicReader}
+          className="fixed bottom-20 right-4 z-40 bg-gradient-to-r from-pink-500 to-purple-500 text-white p-2 rounded-full shadow-lg"
+        >
+          {showVideoFeed ? "Voir BD" : "Voir Vidéos"}
+        </button>
       </main>
       <BottomNavigation />
     </div>
