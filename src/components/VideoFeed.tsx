@@ -13,20 +13,31 @@ interface VideoFeedProps {
 const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [hasCalledOnComplete, setHasCalledOnComplete] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const currentItem = videoFeed[currentIndex];
 
   const handleNextVideo = () => {
     if (currentIndex < videoFeed.length - 1) {
       setCurrentIndex(currentIndex + 1);
-    } else if (onComplete) {
-      onComplete();
+    } else {
+      // Quand on atteint la fin du feed, appeler onComplete une seule fois
+      // puis recommencer au début (boucle du feed)
+      if (onComplete && !hasCalledOnComplete) {
+        onComplete();
+        setHasCalledOnComplete(true);
+      }
+      // Retourner au début du feed
+      setCurrentIndex(0);
     }
   };
 
   const handlePrevVideo = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
+    } else {
+      // Boucler à la fin si on est au début
+      setCurrentIndex(videoFeed.length - 1);
     }
   };
 
@@ -38,7 +49,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
 
   useEffect(() => {
     // Auto-play videos when they are loaded
-    if (currentItem.type === 'video' && videoRef.current) {
+    if (currentItem?.type === 'video' && videoRef.current) {
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
         playPromise
