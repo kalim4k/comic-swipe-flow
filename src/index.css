@@ -118,41 +118,8 @@
   }
 }
 
-@keyframes pop-in {
-  0% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes pulsate {
-  0%, 100% {
-    transform: scale(1);
-    filter: brightness(1);
-  }
-  50% {
-    transform: scale(1.1);
-    filter: brightness(1.2);
-  }
-}
-
 .emoji-float {
   animation: float-rotate 3s forwards cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.emoji-pop {
-  animation: pop-in 0.4s forwards cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.emoji-pulse {
-  animation: pulsate 1s infinite ease-in-out;
 }
 
 /* Review system animations */

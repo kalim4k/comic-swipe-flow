@@ -84,25 +84,21 @@ const EmojiEffects: React.FC<EmojiEffectsProps> = ({ scrollCount }) => {
     }
   }, [scrollCount]);
 
-  if (!document) return null;
+  if (typeof document === "undefined") return null;
 
   return createPortal(
     <>
       {emojis.map(emoji => (
         <div
           key={emoji.id}
-          className={cn(
-            "fixed pointer-events-none z-50 animate-floating",
-            combo >= 3 ? "animate-pulse" : "",
-            combo >= 5 ? "animate-glow" : ""
-          )}
+          className="fixed pointer-events-none z-50 emoji-float"
           style={{
             left: `${emoji.x}px`,
             top: `${emoji.y}px`,
             fontSize: `${emoji.size}px`,
             transform: `rotate(${emoji.rotation}deg)`,
             opacity: emoji.opacity,
-            animation: `floatingParticles ${emoji.duration}s ease-in-out infinite, fade-in-up 0.5s ease-out forwards`,
+            animationDuration: `${emoji.duration}s`,
             animationDelay: `${emoji.delay}s`,
             textShadow: combo >= 3 ? "0 0 10px rgba(255,105,180,0.8)" : "none",
             filter: combo >= 5 ? "drop-shadow(0 0 10px rgba(255,105,180,0.8))" : "none",

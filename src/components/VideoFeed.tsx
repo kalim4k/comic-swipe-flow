@@ -16,15 +16,22 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete, onScroll }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const currentItem = videoFeed[currentIndex];
+  const [hasShownComplete, setHasShownComplete] = useState(false);
 
   const handleNextVideo = () => {
     if (currentIndex < videoFeed.length - 1) {
       setCurrentIndex(currentIndex + 1);
       if (onScroll) onScroll();
     } else {
-      // Boucler au début plutôt que d'appeler onComplete
+      // Boucler au début
       setCurrentIndex(0);
       if (onScroll) onScroll();
+    }
+    
+    // Appeler onComplete après quelques vidéos si ce n'est pas déjà fait
+    if (currentIndex >= 2 && !hasShownComplete && onComplete) {
+      onComplete();
+      setHasShownComplete(true);
     }
   };
 
@@ -64,11 +71,6 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete, onScroll }) => {
 
   const handleVideoEnd = () => {
     handleNextVideo();
-    
-    // Déclencher onComplete seulement à la fin d'une boucle complète
-    if (currentIndex === videoFeed.length - 1 && onComplete) {
-      onComplete();
-    }
   };
 
   const handleImageLoad = () => {

@@ -11,18 +11,27 @@ const Index = () => {
   const [showAmiraAd, setShowAmiraAd] = useState(false);
   const [showComicReader, setShowComicReader] = useState(false);
   const [scrollCount, setScrollCount] = useState(0);
+  const [adShown, setAdShown] = useState(false);
 
   const handleVideoFeedComplete = () => {
-    setShowAmiraAd(true);
+    if (!adShown) {
+      setShowAmiraAd(true);
+      setAdShown(true);
+    }
   };
 
   const handleAmiraAdClose = () => {
     setShowAmiraAd(false);
-    // Ne changeons pas à ComicReader pour permettre de continuer le scrolling
+    // Permettre à l'utilisateur de continuer à scroller
   };
 
   const handleScroll = () => {
     setScrollCount(prev => prev + 1);
+    
+    // Montrer la pub après quelques scrolls si ce n'est pas déjà fait
+    if (scrollCount > 3 && !adShown && !showAmiraAd) {
+      handleVideoFeedComplete();
+    }
   };
 
   return (
