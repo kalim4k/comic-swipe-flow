@@ -93,7 +93,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
   if (!currentItem) return null;
 
   const transformStyle = isSwiping 
-    ? { transform: `translateY(${swipeDistance}px)`, transition: 'none' }
+    ? { transform: `translateY(${swipeDistance.y}px)`, transition: 'none' }
     : { transform: 'translateY(0)', transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)' };
 
   return (

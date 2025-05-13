@@ -91,6 +91,8 @@ const EmojiEffects: React.FC = () => {
   const { swipeHandlers } = useSwipe({
     onSwipeUp: handleSwipeAction,
     onSwipeDown: handleSwipeAction,
+    onSwipeLeft: handleSwipeAction,  
+    onSwipeRight: handleSwipeAction,
     threshold: 50,
   });
   
