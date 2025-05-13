@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
 
 interface EmojiPosition {
   id: number;
@@ -13,11 +13,15 @@ interface EmojiPosition {
 
 const EMOJIS = ["🔞", "🫦", "🍑", "🍒", "🍆", "🍌"];
 
-const EmojiEffects: React.FC = () => {
+export interface EmojiEffectsRef {
+  triggerEmojis: (count?: number) => void;
+}
+
+const EmojiEffects = forwardRef<EmojiEffectsRef>((_, ref) => {
   const [emojis, setEmojis] = useState<EmojiPosition[]>([]);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  const createEmoji = () => {
+  const createEmoji = useCallback(() => {
     // Create a random position for the emoji
     const id = Date.now() + Math.random();
     const x = Math.random() * window.innerWidth * 0.8; // 80% of screen width
@@ -34,7 +38,27 @@ const EmojiEffects: React.FC = () => {
     setTimeout(() => {
       setEmojis(prev => prev.filter(e => e.id !== id));
     }, 3000);
-  };
+  }, []);
+
+  const triggerEmojis = useCallback((count = 3) => {
+    // Create between 1 and count emojis
+    const emojiCount = Math.floor(Math.random() * count) + 1;
+    
+    for (let i = 0; i < emojiCount; i++) {
+      // Add slight delay between emoji creation
+      setTimeout(() => createEmoji(), i * 100);
+    }
+    
+    // Create vibration effect if available
+    if (navigator.vibrate) {
+      navigator.vibrate(20);
+    }
+  }, [createEmoji]);
+
+  // Expose the triggerEmojis method via ref
+  useImperativeHandle(ref, () => ({
+    triggerEmojis
+  }));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,25 +66,14 @@ const EmojiEffects: React.FC = () => {
       
       // Only create emojis if user is actively scrolling (changed scroll position)
       if (Math.abs(currentScrollY - lastScrollY) > 5) {
-        // Create between 1-3 emojis on scroll
-        const count = Math.floor(Math.random() * 3) + 1;
-        for (let i = 0; i < count; i++) {
-          // Add slight delay between emoji creation
-          setTimeout(() => createEmoji(), i * 100);
-        }
-        
-        // Create vibration effect if available
-        if (navigator.vibrate) {
-          navigator.vibrate(20);
-        }
-        
+        triggerEmojis();
         setLastScrollY(currentScrollY);
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, [lastScrollY, triggerEmojis]);
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-50">
@@ -81,6 +94,8 @@ const EmojiEffects: React.FC = () => {
       ))}
     </div>
   );
-};
+});
+
+EmojiEffects.displayName = 'EmojiEffects';
 
 export default EmojiEffects;

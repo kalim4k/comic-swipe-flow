@@ -5,18 +5,25 @@ import { cn } from '@/lib/utils';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useSwipe } from '@/hooks/useSwipe';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { EmojiEffectsRef } from './EmojiEffects';
 
 interface VideoFeedProps {
   onComplete?: () => void;
+  emojiRef?: React.RefObject<EmojiEffectsRef>;
 }
 
-const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
+const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete, emojiRef }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const currentItem = videoFeed[currentIndex];
 
   const handleNextVideo = () => {
+    // Trigger emoji effect when changing videos
+    if (emojiRef?.current) {
+      emojiRef.current.triggerEmojis(5); // More emojis for video change
+    }
+
     if (currentIndex < videoFeed.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else if (onComplete) {
@@ -25,6 +32,11 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
   };
 
   const handlePrevVideo = () => {
+    // Trigger emoji effect when changing videos
+    if (emojiRef?.current) {
+      emojiRef.current.triggerEmojis(3);
+    }
+
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     }
@@ -53,6 +65,19 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
     }
   }, [currentIndex, currentItem]);
 
+  // Trigger emojis periodically while watching videos
+  useEffect(() => {
+    if (currentItem.type === 'video' && isPlaying) {
+      const intervalId = setInterval(() => {
+        if (emojiRef?.current && Math.random() < 0.3) { // 30% chance of emojis periodically
+          emojiRef.current.triggerEmojis(2);
+        }
+      }, 4000); // Every 4 seconds
+
+      return () => clearInterval(intervalId);
+    }
+  }, [currentIndex, isPlaying, emojiRef]);
+
   const handleVideoEnd = () => {
     handleNextVideo();
   };
@@ -68,6 +93,11 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
 
   const handleVideoClick = () => {
     if (!videoRef.current) return;
+    
+    // Trigger emojis on click
+    if (emojiRef?.current) {
+      emojiRef.current.triggerEmojis(4);
+    }
     
     if (isPlaying) {
       videoRef.current.pause();
@@ -111,6 +141,12 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
               className="w-full h-full object-contain"
               onLoad={handleImageLoad}
               alt="Feed content"
+              onClick={() => {
+                // Trigger emojis on image click
+                if (emojiRef?.current) {
+                  emojiRef.current.triggerEmojis(4);
+                }
+              }}
             />
           )}
 
