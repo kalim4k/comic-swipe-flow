@@ -13,23 +13,22 @@ interface VideoFeedProps {
 const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [hasCalledOnComplete, setHasCalledOnComplete] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const currentItem = videoFeed[currentIndex];
-  const adShownRef = useRef(false);
 
   const handleNextVideo = () => {
     if (currentIndex < videoFeed.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      // Loop back to the first video when reaching the end
+      // Quand on atteint la fin du feed, appeler onComplete une seule fois
+      // puis recommencer au début (boucle du feed)
+      if (onComplete && !hasCalledOnComplete) {
+        onComplete();
+        setHasCalledOnComplete(true);
+      }
+      // Retourner au début du feed
       setCurrentIndex(0);
-    }
-    
-    // Trigger onComplete only once when reaching the last item 
-    // and only if we haven't shown the ad yet
-    if (currentIndex === videoFeed.length - 2 && onComplete && !adShownRef.current) {
-      adShownRef.current = true;
-      onComplete();
     }
   };
 
@@ -37,7 +36,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
     } else {
-      // Loop to the last video when at the beginning and going backwards
+      // Boucler à la fin si on est au début
       setCurrentIndex(videoFeed.length - 1);
     }
   };
@@ -50,7 +49,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
 
   useEffect(() => {
     // Auto-play videos when they are loaded
-    if (currentItem.type === 'video' && videoRef.current) {
+    if (currentItem?.type === 'video' && videoRef.current) {
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
         playPromise
@@ -93,7 +92,7 @@ const VideoFeed: React.FC<VideoFeedProps> = ({ onComplete }) => {
   if (!currentItem) return null;
 
   const transformStyle = isSwiping 
-    ? { transform: `translateY(${swipeDistance.y}px)`, transition: 'none' }
+    ? { transform: `translateY(${swipeDistance}px)`, transition: 'none' }
     : { transform: 'translateY(0)', transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)' };
 
   return (

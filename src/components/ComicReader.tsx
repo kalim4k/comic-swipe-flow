@@ -1,104 +1,81 @@
 
-import React, { useState, useEffect } from 'react';
-import { useSwipe } from '@/hooks/useSwipe';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import ComicPage from './ComicPage';
+import { useState, useEffect } from 'react';
+import ComicPage from '@/components/ComicPage';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import StorePromoAd from './StorePromoAd';
+import { Button } from './ui/button';
+import { ChevronLeft } from 'lucide-react';
 import comicPages from '@/data/comicPages';
-import { ArrowLeft } from 'lucide-react';
 
 interface ComicReaderProps {
   onBack?: () => void;
 }
 
 const ComicReader: React.FC<ComicReaderProps> = ({ onBack }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [direction, setDirection] = useState<'left' | 'right' | null>(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [showPromo, setShowPromo] = useState(false);
+
+  useEffect(() => {
+    // Show promo ad after the 3rd page
+    if (currentPage === 3) {
+      setShowPromo(true);
+    } else {
+      setShowPromo(false);
+    }
+  }, [currentPage]);
+
   const handleNextPage = () => {
-    if (isTransitioning || currentPage >= comicPages.length - 1) return;
-    setDirection('left');
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentPage(prev => Math.min(prev + 1, comicPages.length - 1));
-      setIsTransitioning(false);
-    }, 300);
+    setCurrentPage(prevPage => prevPage + 1);
   };
 
   const handlePrevPage = () => {
-    if (isTransitioning || currentPage <= 0) return;
-    setDirection('right');
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentPage(prev => Math.max(prev - 1, 0));
-      setIsTransitioning(false);
-    }, 300);
+    setCurrentPage(prevPage => Math.max(1, prevPage - 1));
   };
 
-  const { swipeHandlers } = useSwipe({
-    onSwipeLeft: handleNextPage,
-    onSwipeRight: handlePrevPage,
-    threshold: 50
-  });
-
+  const closePromo = () => {
+    setShowPromo(false);
+  };
+  
+  // Get the current comic page data
+  const pageData = comicPages[currentPage - 1] || { 
+    id: currentPage,
+    image: '', 
+    title: `Page ${currentPage}`, 
+    author: 'Celina' 
+  };
+  
   return (
-    <div className="relative h-screen bg-comic overflow-hidden">
-      {/* Back button */}
+    <div className="h-[calc(100vh-64px)]">
       {onBack && (
-        <button
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="absolute top-2 left-2 z-10 bg-black/30 hover:bg-black/50 text-white"
           onClick={onBack}
-          className="absolute top-4 left-4 z-50 bg-black/50 p-2 rounded-full text-white"
         >
-          <ArrowLeft size={24} />
-        </button>
+          <ChevronLeft className="h-5 w-5" />
+        </Button>
       )}
       
-      <div 
-        className="comic-swipe-container"
-        {...swipeHandlers}
-      >
-        {comicPages.map((page, index) => (
-          <ComicPage
-            key={page.id}
-            image={page.image}
-            title={page.title}
-            author={page.author}
-            isActive={currentPage === index}
-            index={index}
-            currentPage={currentPage}
-            direction={direction}
-            isTransitioning={isTransitioning}
+      <ScrollArea className="h-full">
+        <div className="flex flex-col items-center py-8">
+          <ComicPage 
+            image={pageData.image}
+            title={pageData.title}
+            author={pageData.author}
+            isActive={true}
+            index={currentPage - 1}
           />
-        ))}
-      </div>
-
-      {/* Page navigation controls */}
-      <div className="absolute bottom-4 left-0 right-0 flex justify-between px-6">
-        <button 
-          onClick={handlePrevPage}
-          className={cn(
-            "p-3 rounded-full bg-black/30 text-white",
-            currentPage === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-black/50"
-          )}
-          disabled={currentPage === 0}
-        >
-          <ChevronLeft size={24} />
-        </button>
-        <div className="text-white font-medium">
-          {currentPage + 1} / {comicPages.length}
+          <div className="flex justify-between w-full max-w-md mt-4 px-4">
+            <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+              Previous
+            </Button>
+            <Button onClick={handleNextPage}>Next</Button>
+          </div>
         </div>
-        <button 
-          onClick={handleNextPage}
-          className={cn(
-            "p-3 rounded-full bg-black/30 text-white",
-            currentPage === comicPages.length - 1 ? "opacity-50 cursor-not-allowed" : "hover:bg-black/50"
-          )}
-          disabled={currentPage === comicPages.length - 1}
-        >
-          <ChevronRight size={24} />
-        </button>
-      </div>
+      </ScrollArea>
+      
+      {showPromo && <StorePromoAd onClose={closePromo} variant="mid-chapter" />}
     </div>
   );
 };

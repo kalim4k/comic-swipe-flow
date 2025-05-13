@@ -1,51 +1,48 @@
+
 import { useState } from 'react';
 import ComicReader from '@/components/ComicReader';
 import BottomNavigation from '@/components/BottomNavigation';
 import VideoFeed from '@/components/VideoFeed';
 import AmiraAd from '@/components/AmiraAd';
-import EmojiEffects from '@/components/EmojiEffects';
 
 const Index = () => {
   const [showVideoFeed, setShowVideoFeed] = useState(true);
   const [showAmiraAd, setShowAmiraAd] = useState(false);
   const [showComicReader, setShowComicReader] = useState(false);
-  const [adShownOnce, setAdShownOnce] = useState(false);
+  const [videoFeedCompleted, setVideoFeedCompleted] = useState(false);
 
   const handleVideoFeedComplete = () => {
-    // Only show the ad if it hasn't been shown before
-    if (!adShownOnce) {
+    // Uniquement afficher la pub Amira si elle n'a pas déjà été montrée
+    if (!videoFeedCompleted) {
       setShowAmiraAd(true);
-      setAdShownOnce(true);
+      setVideoFeedCompleted(true);
     }
   };
 
   const handleAmiraAdClose = () => {
     setShowAmiraAd(false);
-    // Instead of showing the comic reader, we keep showing the video feed
-    setShowVideoFeed(true);
+    setShowComicReader(true);
+    setShowVideoFeed(false);
   };
 
-  const handleNavigateToComic = () => {
-    setShowVideoFeed(false);
-    setShowComicReader(true);
+  // Permet de revenir au feed vidéo depuis le comic reader
+  const handleBackToFeed = () => {
+    setShowComicReader(false);
+    setShowVideoFeed(true);
   };
 
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-1 relative">
-        {showVideoFeed && !showComicReader && (
+      <main className="flex-1">
+        {showVideoFeed && (
           <div className="h-[calc(100vh-64px)]">
             <VideoFeed onComplete={handleVideoFeedComplete} />
-            <EmojiEffects />
           </div>
         )}
-        {showComicReader && <ComicReader onBack={() => {
-          setShowComicReader(false);
-          setShowVideoFeed(true);
-        }} />}
+        {showComicReader && <ComicReader onBack={handleBackToFeed} />}
         {showAmiraAd && <AmiraAd onClose={handleAmiraAdClose} />}
       </main>
-      <BottomNavigation onComicClick={handleNavigateToComic} />
+      <BottomNavigation />
     </div>
   );
 };
