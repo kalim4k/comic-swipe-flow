@@ -25,7 +25,7 @@ const EmojiEffects = forwardRef<EmojiEffectsRef>((_, ref) => {
     // Create a random position for the emoji
     const id = Date.now() + Math.random();
     const x = Math.random() * window.innerWidth * 0.8; // 80% of screen width
-    const y = window.innerHeight - 100; // Start near the bottom
+    const y = window.innerHeight - 50; // Démarrer plus bas (50px du bas au lieu de 100px)
     const scale = 0.8 + Math.random() * 1.2;
     const rotation = -30 + Math.random() * 60; // Between -30 and 30 degrees
     const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];

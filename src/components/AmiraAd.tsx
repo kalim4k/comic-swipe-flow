@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Book, Image } from 'lucide-react';
+import { Book, Image, X } from 'lucide-react';
 
 interface AmiraAdProps {
   onClose?: () => void;
@@ -11,6 +11,17 @@ interface AmiraAdProps {
 const AmiraAd: React.FC<AmiraAdProps> = ({ onClose }) => {
   return (
     <div className="fixed inset-0 z-40 overflow-y-auto bg-gradient-to-b from-indigo-900/90 via-black/95 to-purple-900/90">
+      {/* Close button */}
+      {onClose && (
+        <button
+          onClick={onClose}
+          className="fixed top-4 right-4 z-50 rounded-full bg-black/40 p-2 text-white/80 hover:bg-black/60 hover:text-white transition-colors"
+          aria-label="Fermer"
+        >
+          <X className="h-6 w-6" />
+        </button>
+      )}
+      
       {/* Top decorative elements */}
       <div className="absolute top-0 left-0 w-full h-40 opacity-70 bg-gradient-to-b from-pink-400/40 to-transparent"></div>
       

@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Book, Image, Store, Gift, Star } from 'lucide-react';
+import { Book, Image, Store, Gift, Star, X } from 'lucide-react';
 
 interface StorePromoAdProps {
   onClose: () => void;
@@ -19,6 +18,15 @@ const StorePromoAd: React.FC<StorePromoAdProps> = ({ onClose, variant = 'end-cha
         ? 'bg-gradient-to-b from-purple-900/90 via-black/95 to-blue-900/90' 
         : 'bg-gradient-to-br from-blue-900/90 via-black/95 to-purple-600/90'
     }`}>
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 z-50 rounded-full bg-black/40 p-2 text-white/80 hover:bg-black/60 hover:text-white transition-colors"
+        aria-label="Fermer"
+      >
+        <X className="h-6 w-6" />
+      </button>
+
       {/* Top decorative elements */}
       <div className={`absolute top-0 left-0 w-full h-40 opacity-70 ${
         isEndChapter

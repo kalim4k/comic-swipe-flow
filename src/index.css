@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -104,7 +105,7 @@
     opacity: 1;
   }
   50% {
-    transform: translateY(-100px) scale(1.2) rotate(10deg);
+    transform: translateY(-150px) scale(1.2) rotate(10deg);
     opacity: 0.8;
   }
   100% {
