@@ -15,14 +15,15 @@ const EMOJIS = ["🔞", "🫦", "🍑", "🍒", "🍆", "🍌"];
 
 const EmojiEffects: React.FC = () => {
   const [emojis, setEmojis] = useState<EmojiPosition[]>([]);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const createEmoji = () => {
     // Create a random position for the emoji
     const id = Date.now() + Math.random();
-    const x = Math.random() * (window.innerWidth - 50);
-    const y = window.innerHeight - 50; // Position at bottom of screen
+    const x = Math.random() * window.innerWidth * 0.8; // 80% of screen width
+    const y = window.innerHeight - 100; // Start near the bottom
     const scale = 0.8 + Math.random() * 1.2;
-    const rotation = -20 + Math.random() * 40;
+    const rotation = -30 + Math.random() * 60; // Between -30 and 30 degrees
     const emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 
     const newEmoji = { id, emoji, x, y, scale, rotation, opacity: 1 };
@@ -37,21 +38,29 @@ const EmojiEffects: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Create between 1-3 emojis on scroll
-      const count = Math.floor(Math.random() * 3) + 1;
-      for (let i = 0; i < count; i++) {
-        setTimeout(() => createEmoji(), i * 100);
-      }
+      const currentScrollY = window.scrollY;
       
-      // Create vibration effect if available
-      if (navigator.vibrate) {
-        navigator.vibrate(20);
+      // Only create emojis if user is actively scrolling (changed scroll position)
+      if (Math.abs(currentScrollY - lastScrollY) > 5) {
+        // Create between 1-3 emojis on scroll
+        const count = Math.floor(Math.random() * 3) + 1;
+        for (let i = 0; i < count; i++) {
+          // Add slight delay between emoji creation
+          setTimeout(() => createEmoji(), i * 100);
+        }
+        
+        // Create vibration effect if available
+        if (navigator.vibrate) {
+          navigator.vibrate(20);
+        }
+        
+        setLastScrollY(currentScrollY);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-50">
@@ -61,7 +70,7 @@ const EmojiEffects: React.FC = () => {
           className="absolute emoji-float"
           style={{
             left: `${emoji.x}px`,
-            top: `${emoji.y}px`,
+            bottom: `${emoji.y}px`,
             transform: `scale(${emoji.scale}) rotate(${emoji.rotation}deg)`,
             opacity: emoji.opacity,
             fontSize: '2.5rem',
