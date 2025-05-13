@@ -1,9 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import ComicPage from '@/components/ComicPage';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import StorePromoAd from './StorePromoAd';
 import { Button } from './ui/button';
 import { ChevronLeft } from 'lucide-react';
+import comicPages from '@/data/comicPages';
 
 interface ComicReaderProps {
   onBack?: () => void;
@@ -34,7 +36,14 @@ const ComicReader: React.FC<ComicReaderProps> = ({ onBack }) => {
     setShowPromo(false);
   };
   
-  // Si le composant a une fonction onBack, ajouter un bouton de retour
+  // Get the current comic page data
+  const pageData = comicPages[currentPage - 1] || { 
+    id: currentPage,
+    image: '', 
+    title: `Page ${currentPage}`, 
+    author: 'Celina' 
+  };
+  
   return (
     <div className="h-[calc(100vh-64px)]">
       {onBack && (
@@ -50,7 +59,13 @@ const ComicReader: React.FC<ComicReaderProps> = ({ onBack }) => {
       
       <ScrollArea className="h-full">
         <div className="flex flex-col items-center py-8">
-          <ComicPage pageNumber={currentPage} />
+          <ComicPage 
+            image={pageData.image}
+            title={pageData.title}
+            author={pageData.author}
+            isActive={true}
+            index={currentPage - 1}
+          />
           <div className="flex justify-between w-full max-w-md mt-4 px-4">
             <Button onClick={handlePrevPage} disabled={currentPage === 1}>
               Previous
