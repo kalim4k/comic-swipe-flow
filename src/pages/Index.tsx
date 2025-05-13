@@ -23,7 +23,9 @@ const Index = () => {
     <div className="min-h-screen flex flex-col">
       <main className="flex-1">
         {showVideoFeed && !showComicReader && (
-          <VideoFeed onComplete={handleVideoFeedComplete} />
+          <div className="h-[calc(100vh-64px)]">
+            <VideoFeed onComplete={handleVideoFeedComplete} />
+          </div>
         )}
         {showComicReader && <ComicReader />}
         {showAmiraAd && <AmiraAd onClose={handleAmiraAdClose} />}
