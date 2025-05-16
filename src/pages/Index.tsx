@@ -7,9 +7,9 @@ import AmiraAd from '@/components/AmiraAd';
 import EmojiEffects, { EmojiEffectsRef } from '@/components/EmojiEffects';
 
 const Index = () => {
-  const [showVideoFeed, setShowVideoFeed] = useState(false); // Changed to false to hide videos by default
+  const [showVideoFeed, setShowVideoFeed] = useState(true);
   const [showAmiraAd, setShowAmiraAd] = useState(false);
-  const [showComicReader, setShowComicReader] = useState(true); // Changed to true to show comics by default
+  const [showComicReader, setShowComicReader] = useState(false);
   
   // Create a reference to the emoji effects
   const emojiRef = useRef<EmojiEffectsRef>(null);
