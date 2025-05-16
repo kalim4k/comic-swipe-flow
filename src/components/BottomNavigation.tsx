@@ -12,6 +12,10 @@ const BottomNavigation = () => {
   const [isInstallDialogOpen, setIsInstallDialogOpen] = useState(false);
 
   const handleDownloadClick = () => {
+    setIsInstallDialogOpen(true);
+  };
+  
+  const handleDownloadAppClick = () => {
     window.open("https://orawin.fun/wp-content/uploads/2025/05/ComX.apk", "_blank");
   };
 
@@ -83,23 +87,23 @@ const BottomNavigation = () => {
         </button>
       </div>
 
-      {/* Dialog d'installation - kept but no longer used since we now download directly */}
+      {/* Dialog d'installation */}
       <Dialog open={isInstallDialogOpen} onOpenChange={setIsInstallDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Installer l'application</DialogTitle>
+            <DialogTitle>Télécharger l'application</DialogTitle>
             <DialogDescription>
-              Ajoutez notre application à votre écran d'accueil pour y accéder rapidement.
+              Téléchargez notre application pour une meilleure expérience sur mobile.
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-4 py-4">
             <p className="text-sm text-muted-foreground">
-              En installant cette application, vous pourrez y accéder directement depuis votre écran d'accueil, sans avoir à ouvrir votre navigateur.
+              Avec notre application mobile, profitez d'une expérience optimisée et accédez à votre contenu préféré même hors ligne.
             </p>
             <div className="flex justify-center">
-              <Button onClick={handleDownloadClick} className="bg-comic-accent hover:bg-comic-accent/90">
+              <Button onClick={handleDownloadAppClick} className="bg-comic-accent hover:bg-comic-accent/90">
                 <Download className="mr-2 h-4 w-4" />
-                Télécharger l'application
+                Télécharger l'APK
               </Button>
             </div>
           </div>
