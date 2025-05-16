@@ -10,55 +10,29 @@ const BottomNavigation = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   const [isInstallDialogOpen, setIsInstallDialogOpen] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
-  // Écouter l'événement beforeinstallprompt
-  useState(() => {
-    const handleBeforeInstallPrompt = (e: Event) => {
-      // Prevent the default browser install prompt
-      e.preventDefault();
-      // Store the event for later use
-      setDeferredPrompt(e);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
-  });
-
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      // Show the install prompt
-      deferredPrompt.prompt();
-      
-      // Wait for the user to respond to the prompt
-      const choiceResult = await deferredPrompt.userChoice;
-      
-      // Reset the deferred prompt variable
-      setDeferredPrompt(null);
-      
-      // Close the dialog after installation attempt
-      setIsInstallDialogOpen(false);
-    }
+  const handleDownloadClick = () => {
+    window.open("https://orawin.fun/wp-content/uploads/2025/05/ComX.apk", "_blank");
   };
 
   const navItems = [
     {
       name: 'Feed',
       path: '/',
-      icon: List
+      icon: List,
+      showIndicator: false
     },
     {
       name: 'Boutique',
       path: '/store',
-      icon: ShoppingCart
+      icon: ShoppingCart,
+      showIndicator: true
     },
     {
       name: 'Message',
       path: '/messages',
-      icon: MessageSquare
+      icon: MessageSquare,
+      showIndicator: true
     }
   ];
 
@@ -73,12 +47,18 @@ const BottomNavigation = () => {
               key={item.path}
               to={item.path}
               className={cn(
-                "flex flex-col items-center p-2 rounded-lg transition-all duration-300",
+                "flex flex-col items-center p-2 rounded-lg transition-all duration-300 relative",
                 isActive 
                   ? "text-comic-accent" 
                   : "text-gray-400 hover:text-gray-200"
               )}
             >
+              {item.showIndicator && !isActive && (
+                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
+                </span>
+              )}
               <item.icon size={24} className={cn(
                 "mb-1 transition-transform duration-300",
                 isActive && "transform scale-110"
@@ -95,7 +75,7 @@ const BottomNavigation = () => {
         
         {/* Bouton Télécharger */}
         <button
-          onClick={() => setIsInstallDialogOpen(true)}
+          onClick={handleDownloadClick}
           className="flex flex-col items-center p-2 rounded-lg transition-all duration-300 text-gray-400 hover:text-gray-200"
         >
           <Download size={24} className="mb-1 transition-transform duration-300" />
@@ -103,7 +83,7 @@ const BottomNavigation = () => {
         </button>
       </div>
 
-      {/* Dialog d'installation */}
+      {/* Dialog d'installation - kept but no longer used since we now download directly */}
       <Dialog open={isInstallDialogOpen} onOpenChange={setIsInstallDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -117,9 +97,9 @@ const BottomNavigation = () => {
               En installant cette application, vous pourrez y accéder directement depuis votre écran d'accueil, sans avoir à ouvrir votre navigateur.
             </p>
             <div className="flex justify-center">
-              <Button onClick={handleInstallClick} className="bg-comic-accent hover:bg-comic-accent/90">
+              <Button onClick={handleDownloadClick} className="bg-comic-accent hover:bg-comic-accent/90">
                 <Download className="mr-2 h-4 w-4" />
-                Installer l'application
+                Télécharger l'application
               </Button>
             </div>
           </div>
