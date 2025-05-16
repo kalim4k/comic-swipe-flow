@@ -1,5 +1,5 @@
 
-import { ShoppingCart, FileText } from "lucide-react";
+import { ShoppingCart, FileText, BookOpen } from "lucide-react";
 import { Button } from "./ui/button";
 import { ComicBook } from "@/data/comicBooks";
 import { useState } from "react";
@@ -45,11 +45,18 @@ const ComicCard = ({ comic }: ComicCardProps) => {
           alt={comic.title} 
           className="w-full h-full object-cover"
         />
+        <div className="absolute top-0 right-0 bg-orange-500 text-white text-xs px-2 py-1 rounded-bl-lg font-medium">
+          {comic.episodes} épisode{comic.episodes > 1 ? 's' : ''}
+        </div>
       </div>
       <div className="p-3 flex flex-col gap-2">
         <h3 className="text-gray-800 font-medium text-sm mb-1 line-clamp-2 h-10">
           {comic.title}
         </h3>
+        <div className="flex items-center gap-1 text-gray-500 text-xs mb-1">
+          <BookOpen size={14} />
+          <span>{comic.episodes} épisode{comic.episodes > 1 ? 's' : ''}</span>
+        </div>
         <p className="text-base font-semibold text-orange-500">
           {comic.price.toLocaleString()} {comic.currency}
         </p>
@@ -85,6 +92,10 @@ const ComicCard = ({ comic }: ComicCardProps) => {
                   alt={comic.title}
                   className="rounded-md max-h-60 object-contain mb-4"
                 />
+                <div className="flex items-center gap-2 mb-2">
+                  <BookOpen className="h-5 w-5 text-orange-500" />
+                  <span className="text-sm font-medium">{comic.episodes} épisode{comic.episodes > 1 ? 's' : ''}</span>
+                </div>
                 <p className="text-xl font-bold text-orange-500">
                   {comic.price.toLocaleString()} {comic.currency}
                 </p>
