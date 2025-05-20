@@ -1,5 +1,6 @@
 
 import { useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import ComicReader from '@/components/ComicReader';
 import BottomNavigation from '@/components/BottomNavigation';
 import VideoFeed from '@/components/VideoFeed';
@@ -51,6 +52,16 @@ const Index = () => {
         )}
         {showAmiraAd && <AmiraAd onClose={handleAmiraAdClose} />}
         {showComicReader && <ComicReader />}
+
+        {/* Add a link to the new CamXTG page */}
+        <div className="fixed top-2 right-2 z-50">
+          <Link 
+            to="/camxtg" 
+            className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-medium shadow-lg"
+          >
+            Cam X TG
+          </Link>
+        </div>
       </main>
       
       <BottomNavigation />

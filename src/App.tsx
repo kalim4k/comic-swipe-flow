@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Store from "./pages/Store";
 import Messages from "./pages/Messages";
 import NotFound from "./pages/NotFound";
+import CamXTG from "./pages/CamXTG";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/store" element={<Store />} />
           <Route path="/messages" element={<Messages />} />
+          <Route path="/camxtg" element={<CamXTG />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
