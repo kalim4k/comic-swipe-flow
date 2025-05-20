@@ -265,9 +265,9 @@ const CamXTG = () => {
               Que préférez vous entre ces deux BD ?
             </h2>
             
-            <div className="flex flex-col sm:flex-row gap-6 w-full max-w-lg justify-center">
+            <div className="flex flex-row gap-6 w-full max-w-lg justify-center">
               <div 
-                className="relative rounded-lg overflow-hidden aspect-[3/4] w-full max-w-xs sm:max-w-[200px] shadow-lg hover:shadow-purple-500/30 transition-all duration-300 hover:scale-[1.05] cursor-pointer"
+                className="relative rounded-lg overflow-hidden aspect-[3/4] w-full max-w-[200px] shadow-lg hover:shadow-purple-500/30 transition-all duration-300 hover:scale-[1.05] cursor-pointer"
                 onClick={() => goToNextStep('bodyPreference')}
               >
                 <img 
@@ -283,7 +283,7 @@ const CamXTG = () => {
               </div>
               
               <div 
-                className="relative rounded-lg overflow-hidden aspect-[3/4] w-full max-w-xs sm:max-w-[200px] shadow-lg hover:shadow-purple-500/30 transition-all duration-300 hover:scale-[1.05] cursor-pointer"
+                className="relative rounded-lg overflow-hidden aspect-[3/4] w-full max-w-[200px] shadow-lg hover:shadow-purple-500/30 transition-all duration-300 hover:scale-[1.05] cursor-pointer"
                 onClick={() => goToNextStep('bodyPreference')}
               >
                 <img 
@@ -308,9 +308,9 @@ const CamXTG = () => {
               Vous préférez des grosses fesses ou des gros seins ?
             </h2>
             
-            <div className="flex flex-col sm:flex-row gap-6 w-full max-w-lg justify-center">
+            <div className="flex flex-row gap-6 w-full max-w-lg justify-center">
               <div 
-                className="relative rounded-lg overflow-hidden w-full max-w-xs shadow-lg hover:shadow-purple-500/30 transition-all duration-300 hover:scale-[1.05] cursor-pointer"
+                className="relative rounded-lg overflow-hidden w-full max-w-[200px] shadow-lg hover:shadow-purple-500/30 transition-all duration-300 hover:scale-[1.05] cursor-pointer"
                 onClick={() => goToNextStep('final')}
               >
                 <img 
@@ -329,7 +329,7 @@ const CamXTG = () => {
               </div>
               
               <div 
-                className="relative rounded-lg overflow-hidden w-full max-w-xs shadow-lg hover:shadow-purple-500/30 transition-all duration-300 hover:scale-[1.05] cursor-pointer"
+                className="relative rounded-lg overflow-hidden w-full max-w-[200px] shadow-lg hover:shadow-purple-500/30 transition-all duration-300 hover:scale-[1.05] cursor-pointer"
                 onClick={() => goToNextStep('final')}
               >
                 <img 
@@ -407,3 +407,4 @@ const CamXTG = () => {
 };
 
 export default CamXTG;
+
