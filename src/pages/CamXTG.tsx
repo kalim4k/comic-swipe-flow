@@ -1,9 +1,9 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress"; 
 import { cn } from "@/lib/utils";
 
 // Step types
@@ -11,6 +11,7 @@ type Step =
   | 'welcome'
   | 'intro'
   | 'age'
+  | 'clickProgress'
   | 'country'
   | 'comicsQuestion'
   | 'comicPreference'
@@ -32,10 +33,28 @@ const ageBrackets = [
   "46+ ans"
 ];
 
+// Ad links for the click progression
+const adLinks = [
+  "https://www.profitableratecpm.com/t7bwwufze?key=a6ddcb1a7d4c7d75c656937f3e87c741",
+  "https://www.profitableratecpm.com/t9jb9smf?key=40443693c17abb2135e9b6e3738db2dd",
+  "https://www.profitableratecpm.com/jbk2360sj?key=7fc034a14e94a1e760dfc819dc5eb505",
+  "https://www.profitableratecpm.com/a5g3pzk5?key=13957d2a449284399821dbab142c2ec6",
+  "https://www.profitableratecpm.com/zd6q3225?key=c8d4677f36e39b6fab42a81040613a03",
+  "https://www.profitableratecpm.com/u561dm0rb?key=8ffe49bb9342d0127cd4bf43681ac0b9",
+  "https://www.profitableratecpm.com/jt5q78fu?key=a58f4867bee88a53189c4f17d4b1dfb8",
+  "https://www.profitableratecpm.com/ak0s2iupss?key=98aad472f5da172c09580b4a6cbd0e42",
+  "https://www.profitableratecpm.com/rsc7zk825d?key=edf05e922bd1026733b9de1b4068df54",
+  "https://www.profitableratecpm.com/p2m4f8zsc?key=269eca63707c776ca6faca0374841b7e",
+  "https://www.profitableratecpm.com/vewrtwrh?key=fa97f8fb83c89e737e3ea98882acbf2d",
+  "https://www.profitableratecpm.com/nmepdad6?key=c2a2f37f5dbface753f82621b887da3d"
+];
+
 const CamXTG = () => {
   const [currentStep, setCurrentStep] = useState<Step>('welcome');
   const [selectedAge, setSelectedAge] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [clickCount, setClickCount] = useState<number>(0);
+  const totalClicks = 10;
   
   // Function to navigate to the next step
   const goToNextStep = (next: Step) => {
@@ -47,6 +66,23 @@ const CamXTG = () => {
       setCurrentStep(next);
     }, 300);
   };
+  
+  // Function to handle the ad click button
+  const handleAdClick = () => {
+    // Open the ad link in a new tab
+    const nextLinkIndex = clickCount % adLinks.length;
+    window.open(adLinks[nextLinkIndex], '_blank');
+    
+    // Increment the click counter
+    const newCount = clickCount + 1;
+    setClickCount(newCount);
+    
+    // If we reached the required clicks, enable the continue button
+    // (The button enablement is handled in the render)
+  };
+  
+  // Calculate progress percentage
+  const progressPercentage = Math.min((clickCount / totalClicks) * 100, 100);
   
   // Content for each step
   const renderStepContent = () => {
@@ -148,10 +184,61 @@ const CamXTG = () => {
             <Button
               className="mt-4 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white"
               disabled={!selectedAge}
-              onClick={() => goToNextStep('country')}
+              onClick={() => goToNextStep('clickProgress')}
             >
               Continuer
             </Button>
+          </div>
+        );
+        
+      case 'clickProgress':
+        return (
+          <div className="animate-fade-in flex flex-col items-center text-center gap-8">
+            <div className="relative w-full max-w-md rounded-2xl overflow-hidden my-4 shadow-lg shadow-purple-500/20">
+              <img 
+                src="https://orawin.fun/wp-content/uploads/2025/05/photo_2025-05-20_11-07-50.jpg" 
+                alt="Amira modèle" 
+                className="w-full object-cover rounded-2xl"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+            </div>
+            
+            <h2 className="text-2xl font-bold text-white">
+              Cliquez pour débloquer le contenu
+            </h2>
+            
+            <div className="w-full max-w-md space-y-4">
+              <p className="text-gray-300">
+                Progression: {Math.round(progressPercentage)}%
+              </p>
+              
+              <Progress 
+                value={progressPercentage} 
+                className="h-3 bg-gray-800" 
+              />
+              
+              <Button
+                onClick={handleAdClick}
+                className="w-full mt-6 bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white py-6 text-lg font-bold animate-pulse"
+              >
+                CLIQUE ICI POUR VOIR PLUS
+              </Button>
+              
+              {clickCount >= totalClicks && (
+                <Button
+                  className="w-full mt-6 bg-gradient-to-r from-green-500 to-cyan-500 hover:from-green-600 hover:to-cyan-600 text-white"
+                  onClick={() => goToNextStep('country')}
+                >
+                  Continuer
+                </Button>
+              )}
+              
+              <p className="text-sm text-gray-400 mt-2">
+                {clickCount < totalClicks 
+                  ? `${totalClicks - clickCount} clics restants pour continuer` 
+                  : "Vous pouvez maintenant continuer!"}
+              </p>
+            </div>
           </div>
         );
         
@@ -407,4 +494,3 @@ const CamXTG = () => {
 };
 
 export default CamXTG;
-
